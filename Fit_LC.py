@@ -103,7 +103,7 @@ for i in range( my_nmin, my_nmax):
 		model.set(z=zed[0])
 		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
 		pdate=res.parameters[1]
-		pass_4cut=Check_Dates(hml[:,1].astyoe(float), pdate)
+		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
 		print hml[:,0][0], pass_4cut
 		'''
 		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0]), xfigsize=10)
