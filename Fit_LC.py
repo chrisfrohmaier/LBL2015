@@ -18,6 +18,7 @@ sncosmo.registry.register(band, force=True)
 def Check_Dates(dates, peakd):
 	low=False
 	high=False
+	print dates
 	dates_trim=dates[(dates>(peakd-20.)) & (dates<(peakd+50.))]
 	print dates_trim
 	#print 'sn_arr', sn_arr[:,0]
