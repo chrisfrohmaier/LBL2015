@@ -18,7 +18,8 @@ sncosmo.registry.register(band, force=True)
 def Check_Dates(dates, peakd):
 	low=False
 	high=False
-	dates_trim=dates[(dates>(peakd-20)) & (dates<(peakd+50))]
+	dates_trim=dates[(dates>(peakd-20.)) & (dates<(peakd+50.))]
+	print dates_trim
 	#print 'sn_arr', sn_arr[:,0]
 	#print 'All diff:', np.diff(sn_arr[:,0])
 	check_low=dates_trim[(dates_trim<peakd)]
@@ -88,7 +89,7 @@ for i in range( my_nmin, my_nmax):
 			band[i]='ptf48r'
 		hml=np.column_stack((hml,band))
 		hml_dat=astropy.table.Table(data=hml, names=('ptfname', 'time', 'magnitude', 'mag_err', 'flux', 'flux_err', 'zp_new', 'zp', 'ra', 'dec', 'zpsys', 'filter'), dtype=('str','float','float','float','float','float','float','float','float','float','str','str'))
-		print 'Doing:', hml[:,0][0]
+		#print 'Doing:', hml[:,0][0]
 
 		cur.execute("SELECT redshift, obsdate, phase from specinfo where ptfname=%s;",(str(hml[:,0][0]),))
 		zed=cur.fetchone()
@@ -96,7 +97,7 @@ for i in range( my_nmin, my_nmax):
 		if len(zed)==0:
 			print 'Bad Query'
 			break
-		print zed[0]
+		#print zed[0]
 		
 		model.set(z=zed[0])
 		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
