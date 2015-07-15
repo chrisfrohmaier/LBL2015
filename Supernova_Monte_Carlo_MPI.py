@@ -286,7 +286,7 @@ ndo = my_nmax - my_nmin
 #print 'Time', TI.time()*(my_rank+1*np.pi)
 
 for i in range( my_nmin, my_nmax):
-	Ra, Dec, peak_date, xone, color, zedshift, int_dis=Random_sneParameters(2455317.5,2455500.5,107.,270,-2.,85.)
+	Ra, Dec, peak_date, xone, color, zedshift, int_dis=Random_sneParameters(2455317.5,2455500.5,310,360,-7.,20.)
 
 	absmagb, absmag_r, sn_par, ebv=Gen_SN(peak_date, Ra, Dec, zedshift, color,xone, int_dis, cur=cur)
 	if absmag_r==9999.99:
