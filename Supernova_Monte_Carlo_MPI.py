@@ -119,7 +119,7 @@ def Pass_Selection(sn_arr, find_bool, peak_date):
 		low=True
 	#	print 'Check', np.diff(check_low)[np.diff(check_low)>0.5]
 	#	print 'Great Success on low'
-	check_high=sn_arr[:,0][(find_bool==True) & (sn_arr[:,0]<peak_date)] #CHECK THIS!!!!
+	check_high=sn_arr[:,0][(find_bool==True) & (sn_arr[:,0]>peak_date)] #CHECK THIS!!!!
 	#print check_high
 	#print 'Differences:', np.diff(check_high)
 	if len(np.diff(check_high)[np.diff(check_high)>0.5])>=2:
