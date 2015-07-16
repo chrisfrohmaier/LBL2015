@@ -11,4 +11,5 @@ m=cur.fetchall()
 m=np.array(m)
 
 plt.hist(m[:,0].astype(float), bins=100)
+plt.title(r'Reduced $\chi^2$ Fits')
 plt.savefig('../LC_Fitter/Chisq_hist.png', dpi=150)
