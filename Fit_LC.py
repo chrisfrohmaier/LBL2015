@@ -20,8 +20,9 @@ def Check_Dates(dates, peakd):
 	high=False
 	print dates
 	dates_trim=dates[(dates>(peakd-20.)) & (dates<(peakd+50.))]
-	print dates_trim
+	
 	dates_trim=np.sort(dates_trim)
+	print dates_trim
 	#print 'sn_arr', sn_arr[:,0]
 	#print 'All diff:', np.diff(sn_arr[:,0])
 	check_low=dates_trim[(dates_trim<peakd)]
