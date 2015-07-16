@@ -15,6 +15,37 @@ transmission=bpass[:,1]
 band=sncosmo.Bandpass(wavelength,transmission, name='ptf48r')
 sncosmo.registry.register(band, force=True)
 
+def Check_Dates(dates, peakd):
+	low=False
+	high=False
+	print dates
+	dates_trim=dates[(dates>(peakd-20.)) & (dates<(peakd+50.))]
+	
+	dates_trim=np.sort(dates_trim)
+	print dates_trim
+	#print 'sn_arr', sn_arr[:,0]
+	#print 'All diff:', np.diff(sn_arr[:,0])
+	check_low=dates_trim[(dates_trim<peakd)]
+	#print check_low
+	#print 'Differences:', np.diff(check_low)
+	if len(np.diff(check_low)[np.diff(check_low)>0.5])>=2:
+		low=True
+	#	print 'Check', np.diff(check_low)[np.diff(check_low)>0.5]
+	#	print 'Great Success on low'
+	check_high=dates_trim[(dates_trim>peakd)] #CHECK THIS!!!!
+	#print check_high
+	#print 'Differences:', np.diff(check_high)
+	if len(np.diff(check_high)[np.diff(check_high)>0.5])>=2:
+		high=True
+	#	print 'Check', np.diff(check_high)[np.diff(check_high)>0.5]
+	#	print 'Great Success on high'
+	if low and high == True:
+		#print 'YES!'
+		return True
+	else:
+		#print 'NO!'
+		return False
+
 N_MODELS_TOTAL = len(l)  # total number of models to run
 nproc = MPI.COMM_WORLD.Get_size()   	# number of processes
 my_rank = MPI.COMM_WORLD.Get_rank()   	# The number/rank of this process
@@ -69,19 +100,35 @@ for i in range( my_nmin, my_nmax):
 		if len(zed)==0:
 			print 'Bad Query'
 			break
-		print zed[0]
+		#print zed[0]
 		
 		model.set(z=zed[0])
-		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.35)}, nburn=100, nsamples=5000)
-		print res.parameters
-		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0]), xfigsize=10)
+		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
+		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
+		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
+		pdate=res.parameters[1]
+		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
+		print hml[:,0][0], pass_4cut
+		
+
+		
+		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
+		plt.axvline(-20., color='black', linestyle='--')
+		plt.axvline(+50., color='black', linestyle='--')
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
 		print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
-		cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]),))
+		print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
+		print 'ndof', len(hml_dat)-4. #len(data)-len(vparam_names)
+		print 'red_chi2', sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
+		# print 'chi2', res.chisq
+		# print 'res.ndof', res.ndof
+		# print 'red_chisq', res.chisq/res.ndof
+		cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec, pass_cut, redchi2) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, %s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]), pass_4cut,float(sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)),))
 		conn.commit()
 		print 'Done:', hml[:,0][0]
 		
 	except ValueError:
-		print 'Value Error'	
+	 	print 'Value Error'
+	
