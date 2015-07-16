@@ -11,4 +11,4 @@ m=cur.fetchall()
 m=np.array(m)
 
 plt.hist(m[:,0].astype(float), bins=10)
-plt.show()
+plt.savefig('../LC_Fitter/Chisq_hist.png')
