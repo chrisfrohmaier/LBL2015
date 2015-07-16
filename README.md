@@ -21,4 +21,4 @@ Next we create a new table of all these objects observed more than 4 times.
 
 ##Reduced Chi Squared distribution for the SALT2.4 fits to real-time photometry
 
-![](https://www.dropbox.com/s/0qio2j27w9mz5gh/Chisq_hist.png?dl=0)
+![ScreenShot](https://photos-6.dropbox.com/t/2/AAAPiLZEjVGtpIl4UqC-tTuZilqTcJv3lOpOk57AxaTR5w/12/37570643/png/32x32/1/_/1/2/Chisq_hist.png/ELqfzRwYmegBIAEgAigB/gBAfYqcbitNvSJsiaXPGWKl1fvSIm9eaadBENA6ocYw?size=1024x768&size_mode=2)
