@@ -108,9 +108,9 @@ for i in range( my_nmin, my_nmax):
 		
 
 		
-		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
-		ax.axvline(-20., color='black', linestyle='--')
-		ax.axvline(+50., color='black', linestyle='--')
+		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
+		fig.axvline(-20., color='black', linestyle='--')
+		fig.axvline(+50., color='black', linestyle='--')
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
