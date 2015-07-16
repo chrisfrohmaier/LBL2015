@@ -131,3 +131,5 @@ for i in range( my_nmin, my_nmax):
 		
 	# except ValueError:
 	# 	print 'Value Error'
+	except TypeError
+		print 'Error'
