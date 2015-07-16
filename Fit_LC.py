@@ -129,5 +129,5 @@ for i in range( my_nmin, my_nmax):
 		#conn.commit()
 		print 'Done:', hml[:,0][0]
 		
-	except ValueError:
-		print 'Value Error'	
+	# except ValueError:
+	# 	print 'Value Error'	
