@@ -107,6 +107,9 @@ for i in range( my_nmin, my_nmax):
 		print hml[:,0][0], pass_4cut
 		
 		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0]), xfigsize=10)
+		plt.title(str(pass_4cut))
+		plt.axvline(pdate-20., color='black', linestyle='--')
+		plt.axvline(pdate+50., color='black', linestyle='--')
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
