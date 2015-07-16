@@ -14,9 +14,10 @@ cur.execute("SELECT redchi2 from sncosmo_fits where redchi2>0 and redchi2<50 and
 m=cur.fetchall()
 m=np.array(m)
 
-plt.hist(n[:,0].astype(float), bins=100, label='Total Sample')
-plt.hist(m[:,0].astype(float), bins=100, label='Passed Selection')
+plt.hist(n[:,0].astype(float), bins=100, label='Total Sample', color='#9b59b6')
+plt.hist(m[:,0].astype(float), bins=100, label='Passed Selection', color='#2ecc71')
 plt.xlabel(r'Reduced $\chi^2$')
 plt.ylabel('Number')
+plot.legend()
 plt.title(r'Reduced $\chi^2$ Fits')
 plt.savefig('../LC_Fitter/Chisq_hist.png', dpi=150)
