@@ -103,7 +103,8 @@ for i in range( my_nmin, my_nmax):
 		#print zed[0]
 		
 		model.set(z=zed[0])
-		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
+		#res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
+		res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)})
 		pdate=res.parameters[1]
 		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
 		print hml[:,0][0], pass_4cut
@@ -117,7 +118,7 @@ for i in range( my_nmin, my_nmax):
 		plt.close()
 		print '### Parameters ###'
 		print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
-		print 'reduced_chi2', sncosmo.chisq(hml_dat, fitted_model)
+		print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
 		#cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec, pass_cut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]), pass_4cut,))
 		#conn.commit()
 		print 'Done:', hml[:,0][0]
