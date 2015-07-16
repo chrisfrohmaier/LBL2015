@@ -105,15 +105,15 @@ for i in range( my_nmin, my_nmax):
 		pdate=res.parameters[1]
 		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
 		print hml[:,0][0], pass_4cut
-		'''
+		
 		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0]), xfigsize=10)
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
 		print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
-		cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]),))
+		cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec, pass_cut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]), pass_4cut,))
 		conn.commit()
 		print 'Done:', hml[:,0][0]
-		'''
+		
 	except ValueError:
 		print 'Value Error'	
