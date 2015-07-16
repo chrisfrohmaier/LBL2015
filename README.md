@@ -18,3 +18,7 @@ For all candidates in PTF between 1st May and 31st October we scan through the d
 There are about 33 million candidates remaining and we store an id and an average ra and dec for each.
 
 Next we create a new table of all these objects observed more than 4 times.
+
+##Reduced Chi Squared distribution for the SALT2.4 fits to real-time photometry
+
+![](https://www.dropbox.com/s/0qio2j27w9mz5gh/Chisq_hist.png?dl=0)
