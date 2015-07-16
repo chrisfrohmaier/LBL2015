@@ -106,11 +106,11 @@ for i in range( my_nmin, my_nmax):
 		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
 		print hml[:,0][0], pass_4cut
 		
-		plt.title(str(pass_4cut))
+
+		
+		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10)
 		plt.axvline(-20., color='black', linestyle='--')
 		plt.axvline(+50., color='black', linestyle='--')
-		sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0]), xfigsize=10)
-
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
