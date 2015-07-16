@@ -6,9 +6,9 @@ import psycopg2
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
 
-cur.execute("SELECT redchi2 from sncosmo_fits where redchi2>0 and redchi2<10000;")
+cur.execute("SELECT redchi2 from sncosmo_fits where redchi2>0 and redchi2<300;")
 m=cur.fetchall()
 m=np.array(m)
 
-plt.hist(m[:,0].astype(float), bins=10)
+plt.hist(m[:,0].astype(float), bins=100)
 plt.savefig('../LC_Fitter/Chisq_hist.png')
