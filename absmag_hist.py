@@ -6,11 +6,11 @@ import psycopg2
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
 
-cur.execute("SELECT abs_mag from sncosmo_fits where abs_mag>-22;")
+cur.execute("SELECT abs_mag from sncosmo_fits where abs_mag>-22 and redchi2<5;")
 n=cur.fetchall()
 n=np.array(n)
 
-cur.execute("SELECT abs_mag from sncosmo_fits where  pass_cut=True and abs_mag>-22;")
+cur.execute("SELECT abs_mag from sncosmo_fits where  pass_cut=True and abs_mag>-22 and redchi2<5;")
 m=cur.fetchall()
 m=np.array(m)
 
