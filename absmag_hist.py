@@ -14,10 +14,10 @@ cur.execute("SELECT abs_mag from sncosmo_fits where  pass_cut=True and abs_mag>-
 m=cur.fetchall()
 m=np.array(m)
 
-fig = plt.figure()                                                               
-ax = fig.add_subplot(1,1,1) 
-                                              
 
+                                              
+fig = matplotlib.pyplot.gcf()
+fig.set_size_inches(7,5)
 plt.hist(n[:,0].astype(float), bins=30, label='Total Sample', color='#3498db')
 plt.hist(m[:,0].astype(float), bins=30, label='Passed Selection', color='#7f8c8d')
 plt.xlabel(r'Absolute Magnitude (B Band)')
