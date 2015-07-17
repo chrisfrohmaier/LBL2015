@@ -32,3 +32,7 @@ If we enforce a new slection crieteria of at least 5 detections with 2 points be
 Just looking at the spectroscopically confirmed SNe Ias I plot their absolute B band magnitude (Bessell B filter) as taken from sncosmo's best fit SALT2.4 lightcurve.
 
 ![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/abs_mag_hist.png)
+
+and those with a reduced $\chi^2$ < 5
+
+![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/abs_mag_hist_red5.png)
