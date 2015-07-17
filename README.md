@@ -22,3 +22,8 @@ Next we create a new table of all these objects observed more than 4 times.
 ##Reduced Chi Squared distribution for the SALT2.4 fits to real-time photometry
 
 ![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/Chisq_hist.png)
+
+##Selection Criteria
+Changing the criteria to 5 points cuts Peter's list of missed candidate potentials in half.
+
+If we enforce a new slection crieteria of at least 5 detections with 2 points before peak and 2 points after peak than we should be good.
