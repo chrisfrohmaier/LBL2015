@@ -36,3 +36,8 @@ Just looking at the spectroscopically confirmed SNe Ias I plot their absolute B 
 and those with a reduced $\chi^2$ < 5
 
 ![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/abs_mag_hist_red5.png)
+
+##PTFNAME but no Type
+We want to answer the question about whether there is anything in with a ptfname but not a spectroscopic classification of a Ia. 
+
+We queried the database for objects classified as a supernova but no further typing. We found a handful of objects and typed each one by hand. There were no Ias. 
