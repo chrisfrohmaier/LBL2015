@@ -56,7 +56,7 @@ for i in range( my_nmin, my_nmax):
 	m=cur.fetchall()
 	m=np.array(m)
 	
-	hml_dat=astropy.table.Table(data=m, names=('time', 'band', 'flux', 'fluxerr', 'zp', 'zpsys'), dtype=('float','str','float','float','float','float'))
+	hml_dat=astropy.table.Table(data=m, names=('time', 'band', 'flux', 'fluxerr', 'zp', 'zpsys'), dtype=('float','str','float','float','float','str'))
 	print 'Doing:', lcs[i]
 
 	
