@@ -211,7 +211,8 @@ def update_io_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_
 	conn2.commit()
 	return snid
 def update_lc_table(snid, date_array, mag_array, zp_array, cur2=cur2):
-	cur2.execute("INSERT INTO inout_lc (snid, date, mag, zeropoint) VALUES (%s,%s,%s,%s);",(float(snid), date_array, mag_array, zp_array))
+	for i in range(0,len(date_array)):
+		cur2.execute("INSERT INTO inout_lc (snid, date, mag, zeropoint) VALUES (%s,%s,%s,%s);",(float(snid), date_array[i], mag_array[i], zp_array[i]))
 	conn2.commit()
 
 
