@@ -150,7 +150,7 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 
 	mabs= -19.05 - alpha*x_1 + beta*colour + int_dis #Setting the absolute Magnitude of the Supernova
 	if m.size==0:
-		return mabs, 9999.99, False, 9999.99
+		return mabs, 9999.99, [], 9999.99
 	#print 'MW Extinction E(B-V): ', m[:,7][0]
 	dust = sncosmo.CCM89Dust()
 	model=sncosmo.Model(source=source, effects=[dust], effect_names=['mw'], effect_frames=['obs']) 
@@ -261,7 +261,7 @@ for i in range( my_nmin, my_nmax):
 		Pass=Pass_Selection(sn_par, find_bool, peak_date)
 	#print Ra, Dec, Pass
 	snid=update_io_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
-	if sn_par==False:
+	if len(sn_par)==0:
 		continue
 	update_lc_table(snid[0], sn_par[:,0], sn_par[:,1], sn_par[:,8])
 
