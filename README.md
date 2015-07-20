@@ -6,9 +6,9 @@ Work at LBL in July 2015
 	
 	- Is there a better way of doing this?
 
-<del>2. Get the photometric sample. i.e. Those non-spec confirmed, where is this table?
+<del>2. Get the photometric sample. i.e. Those non-spec confirmed, where is this table?</del>
 
-	- If there is a host assocoiated with these then look up in  NED/SDSS for the host redshift</del>
+	<del>- If there is a host assocoiated with these then look up in  NED/SDSS for the host redshift</del>
 
 3. Find objects we have missed.
 
