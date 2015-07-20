@@ -32,57 +32,9 @@ cur = conn.cursor()
 conn2 = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier') #Connecting to the SN Group Server Database
 cur2 = conn2.cursor()
 
-def Get_Fields_Max_Area_2010(ujd_start, ujd_stop):
-	flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400','#c0392b','#7f8c8d']
-	conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier') #Connecting to the SN Group Server Database
-	cur = conn.cursor()
-	cur.execute("SELECT distinct (subtraction.ptffield), min(subtraction.ra_ul), max(subtraction.dec_ul), max(subtraction.ra_ur), max(subtraction.dec_ur), max(subtraction.ra_lr), min(subtraction.dec_lr), min(subtraction.ra_ll), min(subtraction.dec_ll) from subtraction JOIN ptffield ON subtraction.ptffield=ptffield.id  where subtraction.filter='R' and (ujd>%s and ujd<%s) and height<10 and width<10 and ptffield.color_excess<0.1 and ra_ll>305 and dec_ll>-23 and dec_lr>-23 and ra_ul>305 and dec_ur<31.6 and dec_ul<31.6  GROUP BY subtraction.ptffield, ptffield.color_excess;",(float(ujd_start),float(ujd_stop),)) #Get Everything from the Subtraction Table
-	m=cur.fetchall()
-	cur.close()
-	print 'DB_Done'
-	sub=np.array(m) #All the Subtraction Information
-	'''
-	0 ptffield, 
-	1 ra_ul, 
-	2 dec_ul, 
-	3 ra_ur, 
-	4 dec_ur, 
-	5 ra_lr, 
-	6 dec_lr, 
-	7 ra_ll, 
-	8 dec_ll, 
-	'''
-	# for i in range(0,len(sub)):
-	# 	print (sub[:,1][i],sub[:,2][i]),(sub[:,3][i],sub[:,4][i]),(sub[:,5][i],sub[:,6][i]),(sub[:,7][i],sub[:,8][i])
-	# print len(sub[:,0])
-	#plt.subplot(111, projection="mollweide")
-	for i in range(0,len(sub[:,0])):
-		area=Polygon([(np.min((sub[:,1][i],sub[:,7][i])),np.max((sub[:,2][i],sub[:,4][i]))),(np.max((sub[:,3][i],sub[:,5][i])),np.max((sub[:,2][i],sub[:,4][i]))),(np.max((sub[:,5][i],sub[:,3][i])),np.min((sub[:,8][i],sub[:,6][i]))),(np.min((sub[:,7][i],sub[:,1][i])),np.min((sub[:,8][i],sub[:,6][i])))])
-		patch = PolygonPatch(area, facecolor='white',zorder=2)
-		plt.gca().add_patch(patch)
-	#fig = matplotlib.pyplot.gcf()
-	#fig.set_size_inches(20,10)
-	#plt.xlim(0,360)
-	#plt.ylim(-35,90)
-
-	#cords=Convert_2010_Coords()
-
-	sima=Polygon([(305,-23),(305,31.6),(360,31.6),(360,-23)])
-	simp = PolygonPatch(sima, facecolor='k',zorder=0)
-	plt.gca().add_patch(simp)
-	'''
-	plt.scatter(cords[:,0], cords[:,1], label='Spec Confirmed SNe Ia = '+str(len(cords[:,0])), color='w', zorder=200)
-	plt.legend()
-	plt.title('2010')
-	plt.xlabel('Ra')
-	plt.ylabel('Dec')
-	plt.show()
-	#plt.savefig('The_2010_Sky.png', dpi=300, bbox_inches='tight')
-	plt.close()	
-	'''
 def Get_Obs_Conditions(Ra, Dec, peak_date, cur=cur):
 	
-	cur.execute("SELECT geo_sub.ujd, geo_sub.ptffield, geo_sub.ccdid, geo_sub.lmt_mg_new, (geo_sub.seeing_new/geo_sub.seeing_ref), geo_sub.medsky_new, geo_sub.good_pix_area, ptffield.color_excess FROM geo_sub JOIN ptffield ON geo_sub.ptffield=ptffield.id WHERE geo_sub.filter='R' and ujd>(%s-20.) and ujd<(%s+50.) and height<10 and width<10 and st_contains(geo_sub.geo_ccd, ST_GeometryFromText('Point(%s %s)',4326))=True  ORDER BY geo_sub.ujd ASC;",(float(peak_date),float(peak_date),float(Ra),float(Dec),)) #Get Everything from the Subtraction Table
+	cur.execute("SELECT geo_sub.ujd, geo_sub.ptffield, geo_sub.ccdid, geo_sub.lmt_mg_new, (geo_sub.seeing_new/geo_sub.seeing_ref), geo_sub.medsky_new, geo_sub.good_pix_area, ptffield.color_excess, geo_sub.sub_zp FROM geo_sub JOIN ptffield ON geo_sub.ptffield=ptffield.id WHERE geo_sub.filter='R' and ujd>(%s-20.) and ujd<(%s+50.) and height<10 and width<10 and st_contains(geo_sub.geo_ccd, ST_GeometryFromText('Point(%s %s)',4326))=True  ORDER BY geo_sub.ujd ASC;",(float(peak_date),float(peak_date),float(Ra),float(Dec),)) #Get Everything from the Subtraction Table
 	m=cur.fetchall()
 	
 	m=np.array(m)
@@ -95,6 +47,7 @@ def Get_Obs_Conditions(Ra, Dec, peak_date, cur=cur):
 	m[:,5]	| medsky_new
 	m[:,6]	| good_pix_area	
 	m[:,7]	| color_excess
+	m[:,8]	| sub_zp
 	'''
 	
 	return m
@@ -185,10 +138,10 @@ def Random_sneParameters(low_ujd, high_ujd, low_ra, high_ra, low_dec, high_dec):
 
 def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	#Use below if on Iridis
-	source = sncosmo.SALT2Source(modeldir="/scratch/cf5g09/Monte_Carlos/salt2-4")
+	#source = sncosmo.SALT2Source(modeldir="/scratch/cf5g09/Monte_Carlos/salt2-4")
 
 	##Use below if not on iridis
-	#source=sncosmo.get_source('salt2',version='2.4') 
+	source=sncosmo.get_source('salt2',version='2.4') 
 	
 
 	alpha=0.141
@@ -220,6 +173,8 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	m[:,4]	| Seeing_ratio
 	m[:,5]	| medsky_new
 	m[:,6]	| good_pix_area	
+	m[:,7]	| color excess
+	m[:,8]	| sub_zp
 	'''
 	##Getting Rid of NANs in the Mag arrays
 	time_array=m[:,0][~np.isnan(maglc)]
@@ -230,9 +185,11 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	see_rat=m[:,4][~np.isnan(maglc)]
 	med_lc=m[:,5][~np.isnan(maglc)]
 	pix_lc=m[:,6][~np.isnan(maglc)]
+	ebv_lc=m[:,7][~np.isnan(maglc)]
+	zp_lc=m[:,8][~np.isnan(maglc)]
 	#print maglc
 	#print mag_lc
-	sn_par=np.array((time_array, mag_lc, flux_lc, ccd_lc, lmt_lc, see_rat, med_lc, pix_lc )).T
+	sn_par=np.array((time_array, mag_lc, flux_lc, ccd_lc, lmt_lc, see_rat, med_lc, pix_lc, zp_lc )).T
 	'''snapr
 	snpar[:,0]	| time
 	snpar[:,1]	| mag_lc
@@ -242,16 +199,23 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	snpar[:,5]	| see_rat
 	snpar[:,6]	| med_lc
 	snpar[:,7]	| pix_lc
+	snpar[:,8]	| sub_zp
 	'''
 	#print sn_par
 
 	return  mabs, absmag_r, sn_par, m[:,7][0] #m[:,7][0] is color_excess
 
-def update_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv, cur2=cur2):
-	cur2.execute("INSERT INTO sn_mc (peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)",(float(peak_date), ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv))
+def update_io_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv, cur2=cur2):
+	cur2.execute("INSERT INTO inout_sn_mc (peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s) RETURNING sn_id",(float(peak_date), ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv))
+	snid=cur2.fetchone()
+	conn2.commit()
+	return snid
+def update_lc_table(snid, date_array, mag_array, zp_array, cur2=cur2):
+	cur2.execute("INSERT INTO inout_lc (snid, date, mag, zeropoint) VALUES (%s,%s,%s,%s);",(float(snid), date_array, mag_array, zp_array))
 	conn2.commit()
 
-N_MODELS_TOTAL = 50000000
+
+N_MODELS_TOTAL = 500000
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
 found_array=np.ones(N_MODELS_TOTAL)
@@ -295,7 +259,8 @@ for i in range( my_nmin, my_nmax):
 		find_bool=Check_Detection(sn_par)
 		Pass=Pass_Selection(sn_par, find_bool, peak_date)
 	#print Ra, Dec, Pass
-	update_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
+	snid=update_io_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
+	update_lc_table(snid, snpar[:,0], snpar[:,1], snpar[:,8])
 
 #uncomment this at the end of your script
 cur.close()
@@ -303,14 +268,4 @@ time2 = TI.time()
 time_tot = time2 - time_init
 # always call this when finishing up
 MPI.Finalize()
-'''
-q=np.array([ra_array,dec_array,found_array]).T
-#print q
-#print q[:,0][q[:,2]==True]
-
-plt.scatter(q[:,0][q[:,2]==True],q[:,1][q[:,2]==True], color='green', s=5., zorder=100)
-plt.scatter(q[:,0][q[:,2]==False],q[:,1][q[:,2]==False], color='red', s=2., zorder=1)
-Get_Fields_Max_Area_2010(2455317.5,2455500.5)
-plt.show()
-'''
 print "Time to do x:", time_tot
