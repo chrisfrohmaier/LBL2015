@@ -261,6 +261,8 @@ for i in range( my_nmin, my_nmax):
 		Pass=Pass_Selection(sn_par, find_bool, peak_date)
 	#print Ra, Dec, Pass
 	snid=update_io_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
+	if sn_par==False:
+		continue
 	update_lc_table(snid[0], sn_par[:,0], sn_par[:,1], sn_par[:,8])
 
 #uncomment this at the end of your script
