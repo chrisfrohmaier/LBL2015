@@ -51,24 +51,24 @@ cur = conn.cursor()
 
 for i in range( my_nmin, my_nmax):
 
-	try:
-		cur.execute("SELECT date, 'ptf48r', 10^((mag-zeropoint)/(-2.5)),|/10^((mag-zeropoint)/(-2.5)), zeropoint, 'ab' FROM inout_lc WHERE snid=%s", (lcs[i],))
-		m=cur.fetchall()
-		m=np.array(m)
-		
-		hml_dat=astropy.table.Table(data=m, names=('time', 'band', 'flux', 'fluxerr', 'zp', 'zpsys'), dtype=('float','str','float','float','float','float'))
-		print 'Doing:', lcs[i]
+	# try:
+	cur.execute("SELECT date, 'ptf48r', 10^((mag-zeropoint)/(-2.5)),|/10^((mag-zeropoint)/(-2.5)), zeropoint, 'ab' FROM inout_lc WHERE snid=%s", (lcs[i],))
+	m=cur.fetchall()
+	m=np.array(m)
+	
+	hml_dat=astropy.table.Table(data=m, names=('time', 'band', 'flux', 'fluxerr', 'zp', 'zpsys'), dtype=('float','str','float','float','float','float'))
+	print 'Doing:', lcs[i]
 
-		
-		
-		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['z','t0','x0','x1','c'], bounds={'z':(0,0.15),'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
-		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
-		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
-				
-		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), xfigsize=10)
-		
-		plt.savefig('Fitted_LCs/'+str(lcs[i])+'.png', dpi=150, bbox_inches='tight')
-		plt.close()
+	
+	
+	res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['z','t0','x0','x1','c'], bounds={'z':(0,0.15),'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
+	#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
+	#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
+			
+	fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), xfigsize=10)
+	
+	plt.savefig('Fitted_LCs/'+str(lcs[i])+'.png', dpi=150, bbox_inches='tight')
+	plt.close()
 		# print '### Parameters ###'
 		# print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
 		# print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
