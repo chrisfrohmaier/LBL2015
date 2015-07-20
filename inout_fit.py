@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from mpi4py import MPI
 flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400','#c0392b','#7f8c8d']
 #l=np.genfromtxt('PTFNAME_Coord_List_Ia.dat', usecols=(0,), delimiter=',', dtype=None)
+lcs=np.loadtxt('inout_snid_list.dat', usecols=(0,),dtype='int')
+
 source=sncosmo.get_source('salt2',version='2.4') 
 model=sncosmo.Model(source=source) 
 bpass=np.loadtxt('PTF48R.dat')
@@ -15,7 +17,7 @@ transmission=bpass[:,1]
 band=sncosmo.Bandpass(wavelength,transmission, name='ptf48r')
 sncosmo.registry.register(band, force=True)
 
-N_MODELS_TOTAL = len(l)  # total number of models to run
+N_MODELS_TOTAL = len(lcs)  # total number of models to run
 nproc = MPI.COMM_WORLD.Get_size()   	# number of processes
 my_rank = MPI.COMM_WORLD.Get_rank()   	# The number/rank of this process
 
@@ -45,7 +47,7 @@ ndo = my_nmax - my_nmin
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
 
-lcs=np.loadtxt('inout_snid_list.dat', usecols=(0,),dtype='int')
+
 
 for i in range( my_nmin, my_nmax):
 
