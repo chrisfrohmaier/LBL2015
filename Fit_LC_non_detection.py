@@ -96,7 +96,7 @@ for i in range( my_nmin, my_nmax):
 		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
 		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
 		pdate=res.parameters[1]
-		#pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
+		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
 		#print l[i], pass_4cut
 		
 
