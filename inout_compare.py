@@ -10,7 +10,7 @@ flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400'
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
 
-cur.execute("SELECT inout_sn_mc.sn_id, inout_sn_mc.peak_date, inout_sn_mc.ab_magb, inout_sn_mc.redshift, inout_sn_mc.x1, inout_lc.redshift, inout_lc.t0, inout_lc.x1, inout_lc.abs_mag, inout_lc.redchi2 from inout_sn_mc JOIN inout_fit where inout_sn_mc.sn_id=inout_lc.snid;")
+cur.execute("SELECT inout_sn_mc.sn_id, inout_sn_mc.peak_date, inout_sn_mc.ab_magb, inout_sn_mc.redshift, inout_sn_mc.x1, inout_lc.redshift, inout_lc.t0, inout_lc.x1, inout_lc.abs_mag, inout_lc.redchi2 from inout_sn_mc JOIN inout_fit on inout_sn_mc.sn_id=inout_lc.snid;")
 m=cur.fetchall()
 m=np.array(m)
 
