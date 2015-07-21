@@ -81,7 +81,7 @@ for i in range( my_nmin, my_nmax):
 	try:
 		hml=np.load(str(l[i])+'_LC.npy')
 		hml_dat=astropy.table.Table(data=hml, names=('time','flux', 'flux_err','zp','filter','zpsys'), dtype=('float','float','float','float','str','str'))
-		print 'Doing:', hml[:,0][0]
+		print 'Doing:', l[i]
 
 		cur.execute("SELECT redshift, obsdate, phase from specinfo where ptfname=%s;",(str(l[i]),))
 		zed=cur.fetchone()
@@ -96,15 +96,15 @@ for i in range( my_nmin, my_nmax):
 		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
 		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
 		pdate=res.parameters[1]
-		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
-		print hml[:,0][0], pass_4cut
+		#pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
+		#print l[i], pass_4cut
 		
 
 		
-		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
+		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(l[i])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
 		plt.axvline(-20., color='black', linestyle='--')
 		plt.axvline(+50., color='black', linestyle='--')
-		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
+		plt.savefig('LC_Fixed/'+str(l[i])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
 		print str(l[i]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
