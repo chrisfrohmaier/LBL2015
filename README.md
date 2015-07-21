@@ -41,3 +41,14 @@ and those with a reduced $\chi^2$ < 5
 We want to answer the question about whether there is anything in with a ptfname but not a spectroscopic classification of a Ia. 
 
 We queried the database for objects classified as a supernova but no further typing. We found a handful of objects and typed each one by hand. There were no Ias. 
+
+##Comparing the Simulated Ia input parameters to the sncosmo fits
+I have created 3 new tables on the sngroup server called `inout_*`. These tables store simulated light curve data.
+The `inout_sn_mc` table it a replica of `sn_mc` and holds the simulated parameters and the found True/False statements.
+`inout_lc` is a brand new table. This stores the light curve data, e.g. ujd, mag etc. We don't store this information for our actual simualtions as this would be too data heavy.
+`inout_fit` stores the fit parameters from sncosmo on the data in `inout_lc`
+
+We compare the `inout_sn_mc` and `inout_lc` tables to see if we can reliably recreate the input supernova parameters after they have been thorough our PTF simulated pipeline.
+
+![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/Diff_Hist.png)
+
