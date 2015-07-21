@@ -34,7 +34,7 @@ ab_mg_diff=m[:,2]-m[:,8]
 z_diff=m[:,3]-m[:,5]
 x1_diff=m[:,4]-m[:,7]
 
-plot.suptitle("Differences between the input supernovae and the output supernovae\n Input-Output")
+plt.suptitle("Differences between the input supernovae and the output supernovae\n Input-Output")
 plt.subplot(2,2,1)
 plt.xlabel('Peak Date Difference')
 plt.hist(t0_diff, bins=100, color=flat_cols[0])
