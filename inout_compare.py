@@ -40,7 +40,7 @@ plt.xlabel('Peak Date Difference (Days)')
 plt.hist(t0_diff, bins=200, color=flat_cols[0],histtype='stepfilled', edgecolor = "none")
 
 plt.subplot(2,2,2)
-plt.xlabel('Absolute Magnitude DIfference (B Band)')
+plt.xlabel('Absolute Magnitude Difference (B Band)')
 plt.hist(ab_mg_diff, bins=200, color=flat_cols[2],histtype='stepfilled', edgecolor = "none")
 
 plt.subplot(2,2,3)
