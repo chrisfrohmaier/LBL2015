@@ -57,7 +57,7 @@ for i in range( my_nmin, my_nmax):
 		m=np.array(m)
 		
 		hml_dat=astropy.table.Table(data=m, names=('time', 'band', 'flux', 'fluxerr', 'zp', 'zpsys'), dtype=('float','str','float','float','float','str'))
-		print 'Doing:', lcs[i]
+		#print 'Doing:', lcs[i]
 
 		
 		
@@ -67,7 +67,7 @@ for i in range( my_nmin, my_nmax):
 				
 		#fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), xfigsize=10)
 		
-		print res.parameters
+		#print res.parameters
 		#plt.savefig('Fitted_LCs/'+str(lcs[i])+'.png', dpi=150, bbox_inches='tight')
 		#plt.close()
 		# print '### Parameters ###'
@@ -75,7 +75,7 @@ for i in range( my_nmin, my_nmax):
 		# print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
 		# print 'ndof', len(hml_dat)-4. #len(data)-len(vparam_names)
 		redchi2=sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
-		print 'absolute magnitue', fitted_model.source_peakabsmag('bessellb','ab')
+		#print 'absolute magnitue', fitted_model.source_peakabsmag('bessellb','ab')
 		# print 'chi2', res.chisq
 		# print 'res.ndof', res.ndof
 		#print 'red_chisq', res.chisq/res.ndof
@@ -84,4 +84,4 @@ for i in range( my_nmin, my_nmax):
 		#print 'Done:', hml[:,0][0]
 		
 	except ValueError:
-		print 'Value Error' 
+		print 'Value Error', lcs[i]
