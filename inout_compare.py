@@ -59,7 +59,8 @@ plt.close()
 
 
 plt.title(r"Reduced \chi^2 Distribution for Fit to Simulated Lightcurves")
-plt.hist(m[:,9][m[:,9]<20], bins=200, color=flat_cols[3],histtype='stepfilled', edgecolor = "none" )
+plt.hist(m[:,9][m[:,9]<20], bins=100, color=flat_cols[3],histtype='stepfilled', edgecolor = "none" )
+plt.axvline(1.0, color='black', linestyle='--')
 fig = matplotlib.pyplot.gcf()
 fig.set_size_inches(15,12)
 plt.savefig('../LC_Fitter/Sim_LC_Fit/inout_redchi2.png', dpi=300, bbox_inches='tight')
