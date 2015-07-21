@@ -65,7 +65,7 @@ for i in range( my_nmin, my_nmax):
 		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
 		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
 				
-		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), xfigsize=10)
+		#fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), xfigsize=10)
 		
 		print res.parameters
 		#plt.savefig('Fitted_LCs/'+str(lcs[i])+'.png', dpi=150, bbox_inches='tight')
@@ -74,11 +74,11 @@ for i in range( my_nmin, my_nmax):
 		# print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
 		# print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
 		# print 'ndof', len(hml_dat)-4. #len(data)-len(vparam_names)
-		# print 'red_chi2', sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
-		# print 'absolute magnitue', fitted_model.source_peakabsmag('bessellb','ab')
+		#print 'red_chi2', sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
+		print 'absolute magnitue', fitted_model.source_peakabsmag('bessellb','ab')
 		# print 'chi2', res.chisq
 		# print 'res.ndof', res.ndof
-		# print 'red_chisq', res.chisq/res.ndof
+		print 'red_chisq', res.chisq/res.ndof
 		#cur.execute("INSERT INTO inout_fit (snid, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, redchi2, abs_mag) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]), pass_4cut,float(sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)), float(fitted_model.source_peakabsmag('bessellb','ab')),))
 		#conn.commit()
 		#print 'Done:', hml[:,0][0]
