@@ -52,7 +52,7 @@ cur = conn.cursor()
 for i in range( my_nmin, my_nmax):
 
 	try:
-		cur.execute("SELECT date, 'ptf48r', 10^((mag-zeropoint)/(-2.5)),|/10^((mag-zeropoint)/(-2.5)), zeropoint, 'ab' FROM inout_lc WHERE snid=%s", (lcs[i],))
+		cur.execute("SELECT date, 'ptf48r', 10^((mag-zeropoint)/(-2.5)),|/10^((mag-zeropoint)/(-2.5)), zeropoint, 'ab' FROM inout_lc WHERE snid=%s and zeropoint>0", (lcs[i],))
 		m=cur.fetchall()
 		m=np.array(m)
 		
