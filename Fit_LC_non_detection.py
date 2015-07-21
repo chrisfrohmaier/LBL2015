@@ -19,6 +19,7 @@ def Check_Dates(hml, peakd):
 	low=False
 	high=False
 	#print dates
+	dates=hml[:,1][hml[:,1]>0]
 	dates_trim=dates[(dates>(peakd-20.)) & (dates<(peakd+50.))]
 	
 	dates_trim=np.sort(dates_trim)
