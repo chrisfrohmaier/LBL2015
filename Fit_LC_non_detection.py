@@ -15,7 +15,7 @@ transmission=bpass[:,1]
 band=sncosmo.Bandpass(wavelength,transmission, name='ptf48r')
 sncosmo.registry.register(band, force=True)
 
-def Check_Dates(dates, peakd):
+def Check_Dates(hml, peakd):
 	low=False
 	high=False
 	#print dates
@@ -96,7 +96,7 @@ for i in range( my_nmin, my_nmax):
 		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
 		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
 		pdate=res.parameters[1]
-		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
+		pass_4cut=Check_Dates(hml, pdate)
 		#print l[i], pass_4cut
 		
 
@@ -107,7 +107,7 @@ for i in range( my_nmin, my_nmax):
 		plt.savefig('LC_Fixed/'+str(l[i])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
-		print str(l[i]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
+		print str(l[i]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c'])
 		print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
 		print 'ndof', len(hml_dat)-4. #len(data)-len(vparam_names)
 		print 'red_chi2', sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
