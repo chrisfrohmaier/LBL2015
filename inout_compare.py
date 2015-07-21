@@ -36,7 +36,7 @@ x1_diff=m[:,4]-m[:,7]
 
 plt.suptitle("Differences between the input supernovae and the output supernovae\n Input-Output")
 plt.subplot(2,2,1)
-plt.xlabel('Peak Date Difference')
+plt.xlabel('Peak Date Difference (Days)')
 plt.hist(t0_diff, bins=100, color=flat_cols[0])
 
 plt.subplot(2,2,2)
@@ -52,7 +52,7 @@ plt.xlabel('X1 Difference')
 plt.hist(x1_diff, bins=100, color=flat_cols[6])
 
 fig = matplotlib.pyplot.gcf()
-fig.set_size_inches(20,14)
+fig.set_size_inches(15,12)
 
-plt.savefig('../LC_Fitter/Sim_LC_Fit/Diff_Hist.png', dpi=200)
+plt.savefig('../LC_Fitter/Sim_LC_Fit/Diff_Hist.png', dpi=300, bbox_inches='tight')
 plt.close()
