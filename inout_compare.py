@@ -54,5 +54,5 @@ plt.hist(x1_diff, bins=100, color=flat_cols[6])
 fig = matplotlib.pyplot.gcf()
 fig.set_size_inches(20,14)
 
-plt.savefig('../LC_Fitter/Sim_fit_Fit/Diff_Hist.png', dpi=200)
+plt.savefig('../LC_Fitter/Sim_LC_Fit/Diff_Hist.png', dpi=200)
 plt.close()
