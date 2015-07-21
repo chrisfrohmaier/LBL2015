@@ -37,19 +37,19 @@ x1_diff=m[:,4]-m[:,7]
 plt.suptitle("Differences between the input supernovae and the output supernovae\n Input-Output. Total number of Objects: "+str(len(m[:,0])))
 plt.subplot(2,2,1)
 plt.xlabel('Peak Date Difference (Days)')
-plt.hist(t0_diff, bins=200, color=flat_cols[0],histtype='stepfilled')
+plt.hist(t0_diff, bins=200, color=flat_cols[0],histtype='stepfilled', edgecolor = "none")
 
 plt.subplot(2,2,2)
 plt.xlabel('Absolute Magnitude DIfference (B Band)')
-plt.hist(ab_mg_diff, bins=200, color=flat_cols[2],histtype='stepfilled')
+plt.hist(ab_mg_diff, bins=200, color=flat_cols[2],histtype='stepfilled', edgecolor = "none")
 
 plt.subplot(2,2,3)
 plt.xlabel('Redshift Difference')
-plt.hist(z_diff, bins=200, color=flat_cols[4],histtype='stepfilled')
+plt.hist(z_diff, bins=200, color=flat_cols[4],histtype='stepfilled', edgecolor = "none")
 
 plt.subplot(2,2,4)
 plt.xlabel('X1 Difference')
-plt.hist(x1_diff, bins=200, color=flat_cols[6],histtype='stepfilled')
+plt.hist(x1_diff, bins=200, color=flat_cols[6],histtype='stepfilled', edgecolor = "none")
 
 fig = matplotlib.pyplot.gcf()
 fig.set_size_inches(15,12)
