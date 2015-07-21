@@ -79,7 +79,7 @@ for i in range( my_nmin, my_nmax):
 		# print 'chi2', res.chisq
 		# print 'res.ndof', res.ndof
 		#print 'red_chisq', res.chisq/res.ndof
-		cur.execute("INSERT INTO inout_fit (snid, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, redchi2, abs_mag) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",((str(lcs[i]),float(res.parameters[0]), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(fitted_model.source_peakabsmag('bessellb','ab')),))
+		cur.execute("INSERT INTO inout_fit (snid, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, redchi2, abs_mag) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(lcs[i]),float(res.parameters[0]), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(fitted_model.source_peakabsmag('bessellb','ab')),))
 		conn.commit()
 		#print 'Done:', hml[:,0][0]
 		
