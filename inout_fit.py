@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from mpi4py import MPI
 flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400','#c0392b','#7f8c8d']
 #l=np.genfromtxt('PTFNAME_Coord_List_Ia.dat', usecols=(0,), delimiter=',', dtype=None)
-lcs=np.loadtxt('inout_snid_list.dat', usecols=(0,),dtype='int')
+lcs=np.loadtxt('inout_snid_list.dat', usecols=(0,),dtype='float')
 
 source=sncosmo.get_source('salt2',version='2.4') 
 model=sncosmo.Model(source=source) 
@@ -52,7 +52,7 @@ cur = conn.cursor()
 for i in range( my_nmin, my_nmax):
 
 	try:
-		cur.execute("SELECT date, 'ptf48r', 10^((mag-zeropoint)/(-2.5)),|/10^((mag-zeropoint)/(-2.5)), zeropoint, 'ab' FROM inout_lc WHERE snid=%s", (lcs[i],))
+		cur.execute("SELECT date, 'ptf48r', 10^((mag-zeropoint)/(-2.5)),|/10^((mag-zeropoint)/(-2.5)), zeropoint, 'ab' FROM inout_lc WHERE snid=%s", (float(lcs[i]),))
 		m=cur.fetchall()
 		m=np.array(m)
 		
