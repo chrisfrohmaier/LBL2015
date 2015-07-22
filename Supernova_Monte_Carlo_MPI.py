@@ -115,14 +115,14 @@ def Pass_Selection(sn_arr, find_bool, peak_date):
 	check_low=sn_arr[:,0][(find_bool==True) & (sn_arr[:,0]<peak_date)]
 	#print check_low
 	#print 'Differences:', np.diff(check_low)
-	if len(np.diff(check_low)[np.diff(check_low)>0.5])>=2:
+	if len(np.diff(check_low)[np.diff(check_low)>=0.5])>=2:
 		low=True
 	#	print 'Check', np.diff(check_low)[np.diff(check_low)>0.5]
 	#	print 'Great Success on low'
-	check_high=sn_arr[:,0][(find_bool==True) & (sn_arr[:,0]>peak_date)] #CHECK THIS!!!!
+	check_high=sn_arr[:,0][(find_bool==True) & (sn_arr[:,0]>peak_date)] 
 	#print check_high
 	#print 'Differences:', np.diff(check_high)
-	if len(np.diff(check_high)[np.diff(check_high)>0.5])>=2:
+	if len(np.diff(check_high)[np.diff(check_high)>=0.5])>=2:
 		high=True
 	#	print 'Check', np.diff(check_high)[np.diff(check_high)>0.5]
 	#	print 'Great Success on high'
@@ -134,15 +134,18 @@ def Pass_Selection(sn_arr, find_bool, peak_date):
 		return False
 
 def Check_Detection(sn_par):
-	'''Fill this in
+	'''This returns a truth array where each element in the array is a true false statement about whether that 
+	observation would have been detected
 	'''
 	probs=(Interp_On_Zoom(sn_par[:,1], sn_par[:,4], sn_par[:,6], sn_par[:,5])).T
-	tot_prob=(np.multiply(probs[:,0],np.divide(sn_par[:,7],0.6603)))
+
+	'''The line tot probs is not needed because the original efficiency grid took care of this
+	tot_prob=(np.multiply(probs[:,0],np.divide(sn_par[:,7],0.6603)))'''
 	#print 'Prob',probs[:,0]
 	#print 'Tot_Prob', tot_prob
 	ran=np.random.uniform(0,1,len(tot_prob))
 	#print ran
-	x=(tot_prob>ran)
+	x=(probs>ran)
 	#print x
 	#print 'Length Before: {}, Length after: {}'.format(len(sn_par[:,0]), len(sn_par[:,0][x==True]))
 	#print sn_par[:,0][x==True]
