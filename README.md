@@ -48,7 +48,8 @@ The `inout_sn_mc` table it a replica of `sn_mc` and holds the simulated paramete
 `inout_lc` is a brand new table. This stores the light curve data, e.g. ujd, mag etc. We don't store this information for our actual simualtions as this would be too data heavy.
 `inout_fit` stores the fit parameters from sncosmo on the data in `inout_lc`
 
-We compare the `inout_sn_mc` and `inout_lc` tables to see if we can reliably recreate the input supernova parameters after they have been thorough our PTF simulated pipeline.
-
+We compare the `inout_sn_mc` and `inout_lc` tables to see if we can reliably recreate the input supernova parameters after they have been thorough our PTF simulated pipeline. I have performed this test for ~50,000 supernovae.
+###Difference histograms
 ![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/Diff_Hist.png)
-
+###Reduced Chi Squared of fit to recovered lightcurve
+![ScreenShot](https://dl.dropboxusercontent.com/u/37570643/LBL_July2015/inout_redchi2.png)
