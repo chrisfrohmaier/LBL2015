@@ -19,7 +19,7 @@ def Check_Dates(hml, peakd):
 	low=False
 	high=False
 	#print dates
-	dates=hml[:,0][hml[:,0]>0]
+	dates=hml[:,0].astype(float)[hml[:,0].astype(float)>0]
 	dates_trim=dates[(dates>(peakd-20.)) & (dates<(peakd+50.))]
 	
 	dates_trim=np.sort(dates_trim)
@@ -97,7 +97,7 @@ for i in range( my_nmin, my_nmax):
 		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
 		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
 		pdate=res.parameters[1]
-		pass_4cut=Check_Dates(hml_dat, pdate)
+		pass_4cut=Check_Dates(hml, pdate)
 		#print l[i], pass_4cut
 		
 
