@@ -110,3 +110,12 @@ Some of these objects are repeat observations, others are unique supernovae that
 - no match in neg list ($3 \sigma \sqrt(positive^2 + negative^2)$)
 
 -----> This goes into making the `bcand` table
+
+Further filters on `bcand`:
+
+- no star association
+- np ptftrans association
+- has 1+ non-detection before RB
+- will also store the first jd of detection
+
+(smear will also contain the x,y edges effect + CTE if we choose to include it)
