@@ -60,6 +60,7 @@ We want to find objects in PTFNAME that might actually be the same object. We qu
 SELECT t1.qname, t1.qra, t1.qdec, t2.pname, t2.pra, t2.pdec from (select ptfname.ptfname AS qname, avg(candidate.ra) AS qra, avg(candidate.dec) AS qdec from ptfname, candidate where ptfname.candidate_id=candidate.id and type=3 group by qname) t1, (select ptfname.ptfname AS pname, avg(candidate.ra) AS pra, avg(candidate.dec) AS pdec from ptfname, candidate where ptfname.candidate_id=candidate.id and type=3 group by pname) t2 where t1.qname!=t2.pname and q3c_join(t1.qra, t1.qdec, t2.pra, t2.pdec, 0.00277) order by qra, qdec;
 ```
 We get this result:
+
 |qname |       qra        |       qdec       | pname |       pra        |       pdec
 |------|------------------|------------------|-------|------------------|------------------
 |09hdp | 3.84656933463333 |     30.722037382 | 09hdo | 3.84656933463333 |     30.722037382
