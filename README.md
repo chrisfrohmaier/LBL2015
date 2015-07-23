@@ -100,6 +100,7 @@ Some of these objects are repeat observations, others are unique supernovae that
 ======
 
 (with 2+ negative subs)
+
 1. get_neg_list.f
 2. get_list.f
 
@@ -108,3 +109,4 @@ Some of these objects are repeat observations, others are unique supernovae that
 - mag < 20.0 (all observations brighter than 20.)
 - no match in neg list ($3 \sigma \sqrt(positive^2 + negative^2)$)
 
+-----> This goes into making the `bcand` table
