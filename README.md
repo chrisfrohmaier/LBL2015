@@ -17,11 +17,11 @@ Work at LBL in July 2015
 
 **Note** We have chaged our method, further down the page is an updated method descibed in population bcand.
 
-<del>For all candidates in PTF between 1st May and 31st October we scan through the database. We apply our selection cuts of ebv<0.1, filter='R', is_sdss=True.
+<del>For all candidates in PTF between 1st May and 31st October we scan through the database. We apply our selection cuts of ebv<0.1, filter='R', is_sdss=True.</de;>
 
-There are about 33 million candidates remaining and we store an id and an average ra and dec for each.
+<del>There are about 33 million candidates remaining and we store an id and an average ra and dec for each.</del>
 
-Next we create a new table of all these objects observed more than 4 times.</del>
+<del>Next we create a new table of all these objects observed more than 4 times.</del>
 
 ##Reduced Chi Squared distribution for the SALT2.4 fits to real-time photometry
 
