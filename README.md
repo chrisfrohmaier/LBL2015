@@ -56,7 +56,7 @@ We compare the `inout_sn_mc` and `inout_lc` tables to see if we can reliably rec
 
 ##Query for PTFNAME objects that match itself
 We want to find objects in PTFNAME that might actually be the same object. We query the database using the following query.
-```psql
+```sql
 SELECT t1.qname, t1.qra, t1.qdec, t2.pname, t2.pra, t2.pdec from (select ptfname.ptfname AS qname, avg(candidate.ra) AS qra, avg(candidate.dec) AS qdec from ptfname, candidate where ptfname.candidate_id=candidate.id and type=3 group by qname) t1, (select ptfname.ptfname AS pname, avg(candidate.ra) AS pra, avg(candidate.dec) AS pdec from ptfname, candidate where ptfname.candidate_id=candidate.id and type=3 group by pname) t2 where t1.qname!=t2.pname and q3c_join(t1.qra, t1.qdec, t2.pra, t2.pdec, 0.00277) order by qra, qdec;
 ```
 We get this result:
@@ -74,3 +74,6 @@ We get this result:
 |11gjh | 248.057541854737 | 38.6555497056316 | 12eog | 248.058205301053 | 38.6564946971053
 |11khk |    255.741854236 |    40.5185381536 | 11klx | 255.741927199231 | 40.5204022789231
 |12lee |     354.92284852 |    25.1098173968 | 12lcr |   354.9245924475 | 25.1103071780833
+
+Some of these objects are repeat observations, others are unique supernovae that happened in the same galaxy. Was hoping for a lensed supernova :-(
+
