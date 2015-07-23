@@ -15,7 +15,7 @@ Work at LBL in July 2015
 
 ##<del>Finding missing objects</del>
 
-*Note* We have chaged our method, further down the page is an updated method descibed in population bcand.
+**Note** We have chaged our method, further down the page is an updated method descibed in population bcand.
 
 For all candidates in PTF between 1st May and 31st October we scan through the database. We apply our selection cuts of ebv<0.1, filter='R', is_sdss=True.
 
