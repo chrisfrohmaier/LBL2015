@@ -44,7 +44,9 @@ and those with a reduced $\chi^2$ < 5
 ##PTFNAME but no Type
 We want to answer the question about whether there is anything in with a ptfname but not a spectroscopic classification of a Ia. 
 
-We queried the database for objects classified as a supernova but no further typing. We found a handful of objects and typed each one by hand. There were no Ias. 
+We queried the database for objects classified as a supernova but no further typing. We found a handful of objects and typed each one by hand. 
+
+**There were no SNe Ia**
 
 ##Comparing the Simulated Ia input parameters to the sncosmo fits
 I have created 3 new tables on the sngroup server called `inout_*`. These tables store simulated light curve data.
@@ -94,3 +96,15 @@ Some of these objects are repeat observations, others are unique supernovae that
 ###Bcand Negative Subs table
 
 - Same as above except with negative subtractions and without the RB score.
+
+======
+
+(with 2+ negative subs)
+1. get_neg_list.f
+2. get_list.f
+
+- 2+ detections
+- t_{sep} > 0.5days
+- mag < 20.0 (all observations brighter than 20.)
+- no match in neg list ($3 \sigma \sqrt(positive^2 + negative^2)$)
+
