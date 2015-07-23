@@ -5,6 +5,7 @@ Work at LBL in July 2015
 1. Check sample of Ias is correct
 	
 	- Is there a better way of doing this?
+     - *Answer*: Yes, check the database for the new table `ptftrans`. This holds a more complete list of transients, even with sub-classes and sub-sub-classes. This table was generated from an iptf table.
 
 2. <del>Get the photometric sample. i.e. Those non-spec confirmed, where is this table?</del>
 
