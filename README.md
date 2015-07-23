@@ -77,10 +77,8 @@ We get this result:
 
 Some of these objects are repeat observations, others are unique supernovae that happened in the same galaxy. Was hoping for a lensed supernova :-(
 
-#Summary of Work Done at LBL July 2015
-
-##The B-Cand Table
-###Criteria for object to pass our selection cut
+#The B-Cand Table
+##Criteria for object to pass our selection cut
 
 - Observed between April 1st and Oct 31st
 - Use all possible subtractions  with RB score ≥0.07
@@ -89,6 +87,6 @@ Some of these objects are repeat observations, others are unique supernovae that
 - no reference after April 1st
 - (will with and withou the x,y cuts)
 
-####Bcand Negative Subs table
+###Bcand Negative Subs table
 
 - Same as above except with negative subtractions and without the RB score.
