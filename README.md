@@ -2,7 +2,7 @@
 Work at LBL in July 2015
 
 ##Tasks
-1. Check sample of Ias is correct
+1. Check sample of Ias is correct ✔
 	
 	- Is there a better way of doing this?
      - *Answer*: Yes, check the database for the new table `ptftrans` we created. This holds a more complete list of transients, even with sub-classes and sub-sub-classes.
