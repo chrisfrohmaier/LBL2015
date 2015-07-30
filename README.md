@@ -17,7 +17,7 @@ Work at LBL in July 2015
 
 **Note** We have chaged our method, further down the page is an updated method descibed in population bcand.
 
-<del>For all candidates in PTF between 1st May and 31st October we scan through the database. We apply our selection cuts of ebv<0.1, filter='R', is_sdss=True.</de;>
+<del>For all candidates in PTF between 1st May and 31st October we scan through the database. We apply our selection cuts of ebv\<0.1, filter='R', is_sdss=True</del>
 
 <del>There are about 33 million candidates remaining and we store an id and an average ra and dec for each.</del>
 
@@ -119,3 +119,61 @@ Further filters on `bcand`:
 - will also store the first jd of detection
 
 (smear will also contain the x,y edges effect + CTE if we choose to include it)
+
+#Nugent's BCand README
+We have run the following query to get the 2010 list of candidates which we may have missed in PTF.
+
+select candidate.id, subtraction.ujd, candidate.ra, candidate.dec from candidate, subtraction, ptffield, rb_classifier, deep_ref whe
+re candidate.sub_id=subtraction.id and subtraction.deep_ref_id=deep_ref.id and rb_classifier.candidate_id=candidate.id and subtracti
+on.ptffield=ptffield.id and is_sdss='t' and color_excess <= 0.1 and (candidate.id > 119808777 and candidate.id < 366784713)  and sub
+traction.filter='R' and realbogus >= 0.07 and candidate.mag < 20.0 and candidate.pos_sub='t' and deep_ref.date < '2010-04-01'  order
+ by ra;
+
+candidate.id = 119808777 corresponds to the first candidate on JD 2455288.95065    2010-04-02T10:48:56.160
+candidate.id = 366784713 corresponds to the last candidate on  JD 2455501.05003    2010-10-31T13:12:02.531
+
+To get the list of negative subs:
+
+select candidate.id, subtraction.ujd, candidate.ra, candidate.dec from candidate, subtraction, ptffield, deep_ref where candidate.su
+b_id=subtraction.id and subtraction.deep_ref_id=deep_ref.id and subtraction.ptffield=ptffield.id and is_sdss='t' and color_excess <=
+ 0.1 and (candidate.id > 119808777 and candidate.id < 366784713)  and subtraction.filter='R' and candidate.pos_sub='f' and deep_ref.
+date < '2010-04-01'  order by ra;
+
+  32,390,708 bcand_neg.dat
+   6,736,371 bcand_pos.dat
+
+Then run get_list_neg.f on the result bcand_neg.dat to get a (id, count, ra, dec, sig) where I require count >= 2
+
+Then run get_list.f on the result bcand_pos.dat to get a (id, jd, count, sepcnt, ra, dec, sig) where I require 2+ detections (count)
+ with 1+ detections separated by 0.49 days
+
+Objects are considered a match if they are within 3"
+
+on sgn02 compiled with g95 --free-form -O3 get_list.f
+
+to get fort.22 which I move to positive.dat
+to get fort.23 which I move to negative.dat
+
+443,631 cands in positive.dat
+5,020,865 cand in negative.dat
+
+Tables are created:
+
+\i bcand_pos.schema
+\i bcand_neg.schema
+
+and inserted:
+
+\copy bcand_pos (cand_id, jd, count, sepcnt, ra, dec, sig) from '/project/projectdirs/deepsky/rates/missed/code/positive.dat'  delim
+iter ',';
+\copy bcand_neg (cand_id, count, ra, dec, sig) from '/project/projectdirs/deepsky/rates/missed/code/negative.dat'  delimiter ',';
+
+Now fix the sig's in case they are too low:
+
+update bcand_pos set sig=0.5 where sig < 0.5;
+update bcand_neg set sig=0.5 where sig < 0.5;
+
+And now create sig3:
+
+update bcand_pos set sig3 = sig/3600*3;
+update bcand_neg set sig3 = sig/3600*3;
