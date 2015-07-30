@@ -175,5 +175,5 @@ update bcand_neg set sig=0.5 where sig < 0.5;
 
 And now create sig3:
 
-update bcand_pos set sig3 = sig/3600*3;
-update bcand_neg set sig3 = sig/3600*3;
+update bcand_pos set sig3 = sig/3600\*3;
+update bcand_neg set sig3 = sig/3600\*3;
