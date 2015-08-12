@@ -9,7 +9,7 @@ import psycopg2
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier') #Connecting to the SN Group Server Database
 cur = conn.cursor()
 
-cur.execute("SELECT ra_ll,dec_ll,ra_ul,dec_ul,ra_ur,dec_ur,ra_lr,dec_lr, ccdid from geo_sub where ujd>2455682.5 and ujd<2455865.5;") #Get Everything from the Subtraction Table
+cur.execute("SELECT ra_ll,dec_ll,ra_ul,dec_ul,ra_ur,dec_ur,ra_lr,dec_lr, ccdid from geo_sub where ujd>2455682.5 and ujd<2455683.5;") #Get Everything from the Subtraction Table
 k=cur.fetchall()
 cur.close()
 k=np.array(k)
