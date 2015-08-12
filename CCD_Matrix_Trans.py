@@ -9,11 +9,11 @@ import psycopg2
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier') #Connecting to the SN Group Server Database
 cur = conn.cursor()
 
-cur.execute("SELECT ra_ll,dec_ll,ra_ul,dec_ul,ra_ur,dec_ur,ra_lr,dec_lr, ccdid from geo_sub where ujd>2455682.5 and ujd<2544700.5;") #Get Everything from the Subtraction Table
+cur.execute("SELECT ra_ll,dec_ll,ra_ul,dec_ul,ra_ur,dec_ur,ra_lr,dec_lr, ccdid from geo_sub where ujd>2455682.5 and ujd<2455865.5;") #Get Everything from the Subtraction Table
 k=cur.fetchall()
 cur.close()
 k=np.array(k)
-
+print len(k)
 def ccd0_defect(m):
 	bad_area=[]
 	xt=m[0]
@@ -29,16 +29,17 @@ def ccd0_defect(m):
 		#print 'New Coordinates:', cords
 		#print cords.item(0)
 		bad_area.append((cords.item(0),yt-(cords.item(1)-yt)))
-	simb0=Polygon(bad_area)
-	simb1 = PolygonPatch(simb0, facecolor='k',zorder=10)
-	plt.gca().add_patch(simb1)
+	return Polygon(bad_area)
+	
 
 for m in k:
 	sima=Polygon([(m[0],m[1]),(m[2],m[3]),(m[4],m[5]),(m[6],m[7])])
 	simp = PolygonPatch(sima, facecolor='k',zorder=0)
 	plt.gca().add_patch(simp)
 	if m[8]==0:
-		ccd0_defect(m)
+		simb0=ccd0_defect(m)
+		simb1 = PolygonPatch(simb0, facecolor='k',zorder=10)
+		plt.gca().add_patch(simb1)
 	alpha=np.arctan(np.divide((np.subtract(m[6],m[0])),np.subtract(m[7],m[1])))
 	#print alpha
 
