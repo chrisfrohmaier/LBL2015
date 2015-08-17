@@ -311,7 +311,7 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	m[:,6]	| good_pix_area	
 	'''
 	##Getting Rid of NANs in the Mag arrays
-	time_array=m[:,0][~np.isnan(maglc)]
+	time_array=m[:,0][(~np.isnan(maglc))]
 	mag_lc=maglc[~np.isnan(maglc)]
 	flux_lc=fluxlc[~np.isnan(maglc)]
 	ccd_lc=m[:,2][~np.isnan(maglc)]
@@ -321,8 +321,11 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	pix_lc=m[:,6][~np.isnan(maglc)]
 	#print maglc
 	#print mag_lc
-	sn_par=np.array((time_array, mag_lc, flux_lc, ccd_lc, lmt_lc, see_rat, med_lc, pix_lc )).T
+	#print time_array[mag_lc<20], mag_lc[mag_lc<20]
+	#print time_array[mag_lc<20], mag_lc[mag_lc<20]
+	sn_par=np.array((time_array[mag_lc<20], mag_lc[mag_lc<20], flux_lc[mag_lc<20], ccd_lc[mag_lc<20], lmt_lc[mag_lc<20], see_rat[mag_lc<20], med_lc[mag_lc<20], pix_lc[mag_lc<20] )).T
 	if sn_par.size == 0:
+		#print '--------------------------------------SNPAR--------------------------------------'
 		return mabs, 9999.99, False, 9999.99
 
 	'''snapr
@@ -344,7 +347,7 @@ def update_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis
 	conn2.commit()
 
 
-N_MODELS_TOTAL = 500
+N_MODELS_TOTAL = 100
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
 found_array=np.ones(N_MODELS_TOTAL)
