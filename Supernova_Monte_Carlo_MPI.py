@@ -147,7 +147,7 @@ def all_CCD_check(com, ra, dec):
 
 def Get_Obs_Conditions(Ra, Dec, peak_date, cur=cur):
 	
-	cur.execute("SELECT geo_sub.ujd, geo_sub.ptffield, geo_sub.ccdid, geo_sub.lmt_mg_new, (geo_sub.seeing_new/geo_sub.seeing_ref), geo_sub.medsky_new, geo_sub.good_pix_area, ptffield.color_excess, geo_sub.ra_ll,geo_sub.dec_ll,geo_sub.ra_ul,geo_sub.dec_ul,geo_sub.ra_ur,geo_sub.dec_ur,geo_sub.ra_lr,geo_sub.dec_lr FROM geo_sub JOIN ptffield ON geo_sub.ptffield=ptffield.id WHERE geo_sub.filter='R' and ujd>(%s-25.) and ujd<(%s+55.) and height<10 and width<10 and geo_sub.deep_ref_id<=17783 and st_contains(geo_sub.geo_ccd, ST_GeometryFromText('Point(%s %s)',4326))=True  ORDER BY geo_sub.ujd ASC;",(float(peak_date),float(peak_date),float(Ra),float(Dec),)) #Get Everything from the Subtraction Table
+	cur.execute("SELECT geo_sub.ujd, geo_sub.ptffield, geo_sub.ccdid, geo_sub.lmt_mg_new, (geo_sub.seeing_new/geo_sub.seeing_ref), geo_sub.medsky_new, geo_sub.good_pix_area, ptffield.color_excess, geo_sub.ra_ll,geo_sub.dec_ll,geo_sub.ra_ul,geo_sub.dec_ul,geo_sub.ra_ur,geo_sub.dec_ur,geo_sub.ra_lr,geo_sub.dec_lr FROM geo_sub JOIN ptffield ON geo_sub.ptffield=ptffield.id WHERE ptffield.is_sdss=True and geo_sub.filter='R' and ujd>(%s-25.) and ujd<(%s+55.) and height<10 and width<10 and geo_sub.deep_ref_id<=17783 and st_contains(geo_sub.geo_ccd, ST_GeometryFromText('Point(%s %s)',4326))=True  ORDER BY geo_sub.ujd ASC;",(float(peak_date),float(peak_date),float(Ra),float(Dec),)) #Get Everything from the Subtraction Table
 	m=cur.fetchall()
 	
 	m=np.array(m)
@@ -274,10 +274,10 @@ def Random_sneParameters(low_ujd, high_ujd, low_ra, high_ra, low_dec, high_dec):
 
 def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	#Use below if on Iridis
-	#source = sncosmo.SALT2Source(modeldir="/scratch/cf5g09/Monte_Carlos/salt2-4")
+	source = sncosmo.SALT2Source(modeldir="/scratch/cf5g09/Monte_Carlos/salt2-4")
 
 	##Use below if not on iridis
-	source=sncosmo.get_source('salt2',version='2.4') 
+	#source=sncosmo.get_source('salt2',version='2.4') 
 	
 
 	alpha=0.141
@@ -347,7 +347,7 @@ def update_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis
 	conn2.commit()
 
 
-N_MODELS_TOTAL = 100
+N_MODELS_TOTAL = 50000000
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
 found_array=np.ones(N_MODELS_TOTAL)
@@ -382,7 +382,7 @@ ndo = my_nmax - my_nmin
 #print 'Time', TI.time()*(my_rank+1*np.pi)
 
 for i in range( my_nmin, my_nmax):
-	Ra, Dec, peak_date, xone, color, zedshift, int_dis=Random_sneParameters(2455256.5,2455500.5,310,360,-7.,20.)
+	Ra, Dec, peak_date, xone, color, zedshift, int_dis=Random_sneParameters(2455256.5,2455500.5,107.,270.,-2.,75.)
 
 	absmagb, absmag_r, sn_par, ebv=Gen_SN(peak_date, Ra, Dec, zedshift, color,xone, int_dis, cur=cur)
 	#print sn_par
@@ -392,7 +392,7 @@ for i in range( my_nmin, my_nmax):
 		find_bool=Check_Detection(sn_par)
 		Pass=Pass_Selection(sn_par, find_bool[:,0], peak_date)
 	#print Ra, Dec, Pass
-	#update_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
+	update_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
 
 #uncomment this at the end of your script
 cur.close()
