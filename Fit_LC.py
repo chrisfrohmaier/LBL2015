@@ -105,33 +105,33 @@ for i in range( my_nmin, my_nmax):
 		#print zed[0]
 		
 		model.set(z=zed[0])
-		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
-		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
-		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
-		pdate=res.parameters[1]
+		samples=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, nburn=100, nsamples=5000)
+		#samples[0], samples[1]=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
+		#samples[0], samples[1]=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
+		pdate=samples[0].parameters[1]
 		pass_4cut=Check_Dates(hml[:,1].astype(float), pdate)
 		print hml[:,0][0], pass_4cut
 		
 
 		
-		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
+		fig=sncosmo.plot_lc(hml_dat, model=samples[1], errors=samples[0].errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
 		plt.axvline(-20., color='black', linestyle='--')
 		plt.axvline(+50., color='black', linestyle='--')
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
-		fig2=corner(res,labels=['$t_0$','$x_0$','$x_1$','$c$'],bins=50, verbose=False,)
+		fig2=corner(samples,labels=['$t_0$','$x_0$','$x_1$','$c$'],bins=50, verbose=False,)
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'_Triangle.png',dpi=150,bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
-		print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
-		print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
+		print str(hml[:,0][0]), float(zed[0]), float(0), float(samples[0].parameters[1]), float(samples[0].errors['t0']),float(samples[0].parameters[2]), float(samples[0].errors['x0']),  float(samples[0].parameters[3]), float(samples[0].errors['x1']), float(samples[0].parameters[4]), float(samples[0].errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
+		print 'chi2', sncosmo.chisq(hml_dat, samples[1])
 		print 'ndof', len(hml_dat)-4. #len(data)-len(vparam_names)
-		print 'red_chi2', sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
-		print 'absolute magnitue', fitted_model.source_peakabsmag('bessellb','ab')
-		# print 'chi2', res.chisq
-		# print 'res.ndof', res.ndof
-		# print 'red_chisq', res.chisq/res.ndof
-		cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec, pass_cut, redchi2, abs_mag) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0]), pass_4cut,float(sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)), float(fitted_model.source_peakabsmag('bessellb','ab')),))
+		print 'red_chi2', sncosmo.chisq(hml_dat, samples[1])/(len(hml_dat)-4.)
+		print 'absolute magnitue', samples[1].source_peakabsmag('bessellb','ab')
+		# print 'chi2', samples[0].chisq
+		# print 'samples[0].ndof', samples[0].ndof
+		# print 'red_chisq', samples[0].chisq/samples[0].ndof
+		cur.execute("INSERT INTO sncosmo_fits (ptfname, redshift, redshift_err, t0, t0_err, x0, x0_err, x1, x1_err, c, c_err, ra, dec, pass_cut, redchi2, abs_mag) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(str(hml[:,0][0]), float(zed[0]), float(0), float(samples[0].parameters[1]), float(samples[0].errors['t0']),float(samples[0].parameters[2]), float(samples[0].errors['x0']),  float(samples[0].parameters[3]), float(samples[0].errors['x1']), float(samples[0].parameters[4]), float(samples[0].errors['c']), float(hml[:,8][0]), float(hml[:,9][0]), pass_4cut,float(sncosmo.chisq(hml_dat, samples[1])/(len(hml_dat)-4.)), float(samples[1].source_peakabsmag('bessellb','ab')),))
 		conn.commit()
 		print 'Done:', hml[:,0][0]
 		
