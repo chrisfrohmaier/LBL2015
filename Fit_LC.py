@@ -28,14 +28,14 @@ def Check_Dates(dates, peakd):
 	check_low=dates_trim[(dates_trim<peakd)]
 	#print check_low
 	#print 'Differences:', np.diff(check_low)
-	if len(np.diff(check_low)[np.diff(check_low)>0.5])>=2:
+	if len(np.diff(check_low)[np.diff(check_low)>0.5])>=1:
 		low=True
 	#	print 'Check', np.diff(check_low)[np.diff(check_low)>0.5]
 	#	print 'Great Success on low'
 	check_high=dates_trim[(dates_trim>peakd)] #CHECK THIS!!!!
 	#print check_high
 	#print 'Differences:', np.diff(check_high)
-	if len(np.diff(check_high)[np.diff(check_high)>0.5])>=2:
+	if len(np.diff(check_high)[np.diff(check_high)>0.5])>=1:
 		high=True
 	#	print 'Check', np.diff(check_high)[np.diff(check_high)>0.5]
 	#	print 'Great Success on high'
