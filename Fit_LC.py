@@ -113,13 +113,12 @@ for i in range( my_nmin, my_nmax):
 		print hml[:,0][0], pass_4cut
 		
 
-		plt.subplot(2,1,1)
+		
 		fig=sncosmo.plot_lc(hml_dat, model=fitted_model, errors=res.errors, color=np.random.choice(flat_cols), figtext=str(hml[:,0][0])+'\n'+str(pass_4cut), xfigsize=10, pulls=False)
 		plt.axvline(-20., color='black', linestyle='--')
 		plt.axvline(+50., color='black', linestyle='--')
-		#plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
-		#plt.close()
-		plt.subplot(2,1,2)
+		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
+		plt.close()
 		fig2=corner(res.samples,labels=['$t_0$','$x_0$','$x_1$','$c$'],bins=50, verbose=False)
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'_Triangle.png',dpi=150,bbox_inches='tight')
 		plt.close
