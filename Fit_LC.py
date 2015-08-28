@@ -5,6 +5,8 @@ import astropy
 import sncosmo
 import matplotlib.pyplot as plt
 from mpi4py import MPI
+from triangle import corner
+
 flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400','#c0392b','#7f8c8d']
 l=np.genfromtxt('PTFNAME_Coord_List_Ia.dat', usecols=(0,), delimiter=',', dtype=None)
 source=sncosmo.get_source('salt2',version='2.4') 
@@ -116,6 +118,9 @@ for i in range( my_nmin, my_nmax):
 		plt.axvline(-20., color='black', linestyle='--')
 		plt.axvline(+50., color='black', linestyle='--')
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
+		plt.close()
+		fig2=corner([res,fitted_model],labels=['$t_0$','$x_0$','$x_1$','$c$'],bins=50, verbose=False,)
+		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'_Triangle.png',dpi=150,bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
 		print str(hml[:,0][0]), float(zed[0]), float(0), float(res.parameters[1]), float(res.errors['t0']),float(res.parameters[2]), float(res.errors['x0']),  float(res.parameters[3]), float(res.errors['x1']), float(res.parameters[4]), float(res.errors['c']), float(hml[:,8][0]), float(hml[:,9][0])
