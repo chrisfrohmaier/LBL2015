@@ -119,7 +119,7 @@ for i in range( my_nmin, my_nmax):
 		plt.axvline(+50., color='black', linestyle='--')
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'.png', dpi=150, bbox_inches='tight')
 		plt.close()
-		fig2=corner(samples,bins=50, verbose=False,)
+		fig2=corner(samples,labels=['$t_0$','$x_0$','$x_1$','$c$'],bins=50, verbose=False)
 		plt.savefig('LC_Fixed/'+str(hml[:,0][0])+'_Triangle.png',dpi=150,bbox_inches='tight')
 		plt.close()
 		print '### Parameters ###'
