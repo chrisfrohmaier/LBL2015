@@ -51,11 +51,11 @@ def make_grid(m):
 
 	good_grid=[m[:,0][m[:,8]==True],m[:,4][m[:,8]==True],m[:,5][m[:,8]==True], m[:,3][m[:,8]==True], m[:,6][m[:,8]==True]]
 
-	pdbins=np.linspace(min(m[:,0]), max(m[:,0]), 50)
-	redbins=np.linspace(min(m[:,4]), max(m[:,4]), 50)
-	x1bins=np.linspace(min(m[:,5]), max(m[:,5]), 50)
-	abbins=np.linspace(min(m[:,3]), max(m[:,3]), 50)
-	cbins=np.linspace(min(m[:,6]), max(m[:,6]), 50)
+	pdbins=np.linspace(min(m[:,0]), max(m[:,0]), 500)
+	redbins=np.linspace(min(m[:,4]), max(m[:,4]), 500)
+	x1bins=np.linspace(min(m[:,5]), max(m[:,5]), 500)
+	abbins=np.linspace(min(m[:,3]), max(m[:,3]), 200)
+	cbins=np.linspace(min(m[:,6]), max(m[:,6]), 100)
 
 	H1,edges1 = np.histogramdd(first_grid, bins=(pdbins,redbins,x1bins,abbins,cbins,))
 	#print edges1
@@ -79,13 +79,15 @@ def Load_Grid(gridname, binname):
 def Reg_Grid(uneGrid, ebin, order):
 	#uG=np.load(str(uneGrid)+'.npy')
 	uG=np.nan_to_num(uneGrid)
-	zoom_grid=ndimage.interpolation.zoom(uG, (float(max(uG.shape))/uG.shape[0], float(max(uG.shape))/uG.shape[1],float(max(uG.shape))/uG.shape[2]),order=order, mode='nearest')
-	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (float(max(uG.shape))/ebin[0].shape[0]),order=order, mode='nearest')
-	red_Zoom=ndimage.interpolation.zoom(ebin[1], (float(max(uG.shape))/ebin[1].shape[0]),order=order, mode='nearest')
-	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (float(max(uG.shape))/ebin[2].shape[0]),order=order, mode='nearest')
+	zoom_grid=ndimage.interpolation.zoom(uG, (1000,200,200,200,100),order=order, mode='nearest')
+	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (1000),order=order, mode='nearest')
+	red_Zoom=ndimage.interpolation.zoom(ebin[1], (200),order=order, mode='nearest')
+	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (200),order=order, mode='nearest')
+	ab_Zoom=ndimage.interpolation.zoom(ebin[3], (200), order=order, mode='nearest')
+	c_Zoom=ndimage.interpolation.zoom(ebin[4], (100), order=order, mode='nearest')
 	
-	print zoom_grid.shape, peak_Zoom.shape, red_Zoom.shape, x1_Zoom.shape
-	return zoom_grid, peak_Zoom, red_Zoom, x1_Zoom
+	print zoom_grid.shape, peak_Zoom.shape, red_Zoom.shape, x1_Zoom.shape, ab_Zoom.shape, c_Zoom.shape
+	return zoom_grid, peak_Zoom, red_Zoom, x1_Zoom, ab_Zoom, c_Zoom
 
 m=query_db()
 make_grid(m)
