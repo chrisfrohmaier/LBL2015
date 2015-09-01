@@ -17,7 +17,7 @@ def Reg_Grid(uneGrid, ebin, order):
 	#uG=np.load(str(uneGrid)+'.npy')
 	uG=np.nan_to_num(uneGrid)
 	print 'Zoom Grid Shape: ', uG.shape
-	zoom_grid=ndimage.interpolation.zoom(uG.astype('float16'), (500,200,200,200,100),order=order, mode='nearest')
+	zoom_grid=ndimage.interpolation.zoom(uG.astype('float16'), (100,100,100,100,100),order=order, mode='nearest')
 	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (1000),order=order, mode='nearest')
 	red_Zoom=ndimage.interpolation.zoom(ebin[1], (200),order=order, mode='nearest')
 	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (200),order=order, mode='nearest')
