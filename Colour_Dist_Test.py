@@ -13,9 +13,9 @@ def Load_Grid(gridname, binname):
 
 
 
-def Reg_Grid(uneGrid, ebin, order):
+def Reg_Grid(uG, ebin, order):
 	#uG=np.load(str(uneGrid)+'.npy')
-	uG=np.nan_to_num(uneGrid)
+	uG=np.nan_to_num(uG)
 	print 'Zoom Grid Shape: ', uG.shape
 	zoom_grid=ndimage.interpolation.zoom(uG.astype('float16'), (100,100,100,100,100),order=order, mode='nearest')
 	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (1000),order=order, mode='nearest')
