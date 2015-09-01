@@ -52,10 +52,10 @@ def make_grid(m):
 	good_grid=[m[:,0][m[:,8]==True],m[:,4][m[:,8]==True],m[:,5][m[:,8]==True], m[:,3][m[:,8]==True], m[:,6][m[:,8]==True]]
 
 	pdbins=np.linspace(min(m[:,0]), max(m[:,0]), 500)
-	redbins=np.linspace(min(m[:,4]), max(m[:,4]), 500)
-	x1bins=np.linspace(min(m[:,5]), max(m[:,5]), 500)
-	abbins=np.linspace(min(m[:,3]), max(m[:,3]), 200)
-	cbins=np.linspace(min(m[:,6]), max(m[:,6]), 100)
+	redbins=np.linspace(min(m[:,4]), max(m[:,4]), 50)
+	x1bins=np.linspace(min(m[:,5]), max(m[:,5]), 50)
+	abbins=np.linspace(min(m[:,3]), max(m[:,3]), 50)
+	cbins=np.linspace(min(m[:,6]), max(m[:,6]), 50)
 
 	H1,edges1 = np.histogramdd(first_grid, bins=(pdbins,redbins,x1bins,abbins,cbins,))
 	#print edges1
