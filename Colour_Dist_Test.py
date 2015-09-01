@@ -18,11 +18,11 @@ def Reg_Grid(uG, ebin, order):
 	uG=np.nan_to_num(uG)
 	print 'Zoom Grid Shape: ', uG.shape
 	zoom_grid=ndimage.interpolation.zoom(uG, (10,1,1,1,1),order=order, mode='nearest')
-	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (1000),order=order, mode='nearest')
-	red_Zoom=ndimage.interpolation.zoom(ebin[1], (200),order=order, mode='nearest')
-	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (200),order=order, mode='nearest')
-	ab_Zoom=ndimage.interpolation.zoom(ebin[3], (200), order=order, mode='nearest')
-	c_Zoom=ndimage.interpolation.zoom(ebin[4], (100), order=order, mode='nearest')
+	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (10),order=order, mode='nearest')
+	red_Zoom=ndimage.interpolation.zoom(ebin[1], (1),order=order, mode='nearest')
+	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (1),order=order, mode='nearest')
+	ab_Zoom=ndimage.interpolation.zoom(ebin[3], (1), order=order, mode='nearest')
+	c_Zoom=ndimage.interpolation.zoom(ebin[4], (1), order=order, mode='nearest')
 	
 	print zoom_grid.shape, peak_Zoom.shape, red_Zoom.shape, x1_Zoom.shape, ab_Zoom.shape, c_Zoom.shape
 	return zoom_grid, peak_Zoom, red_Zoom, x1_Zoom, ab_Zoom, c_Zoom
