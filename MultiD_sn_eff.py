@@ -16,7 +16,7 @@ def Mid_Bins(arr):
 def query_db():
 	conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 	cur = conn.cursor()
-	cur.execute("SELECT peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found from sn_mc where ra>310;")
+	cur.execute("SELECT peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found from sn_mc where ra<310;")
 	print 'Database Query Complete'
 	m=cur.fetchall()
 	cur.close()
@@ -47,17 +47,19 @@ def Bin_Me(arr, final_bins):
 
 '''Lets make a multid grid for peakdate, redshift, x1'''
 def make_grid(m):
-	first_grid=[m[:,0],m[:,4],m[:,5]]
+	first_grid=[m[:,0],m[:,4],m[:,5], m[:,3], m[:,6]]
 
-	good_grid=[m[:,0][m[:,8]==True],m[:,4][m[:,8]==True],m[:,5][m[:,8]==True]]
+	good_grid=[m[:,0][m[:,8]==True],m[:,4][m[:,8]==True],m[:,5][m[:,8]==True], m[:,3][m[:,8]==True], m[:,6][m[:,8]==True]]
 
 	pdbins=np.linspace(min(m[:,0]), max(m[:,0]), 50)
 	redbins=np.linspace(min(m[:,4]), max(m[:,4]), 50)
 	x1bins=np.linspace(min(m[:,5]), max(m[:,5]), 50)
+	abbins=np.linspace(min(m[:,3]), max(m[:,3]), 50)
+	cbins=np.linspace(min(m[:,6]), max(m[:,6]), 50)
 
-	H1,edges1 = np.histogramdd(first_grid, bins=(pdbins,redbins,x1bins,))
+	H1,edges1 = np.histogramdd(first_grid, bins=(pdbins,redbins,x1bins,abbins,cbins,))
 	#print edges1
-	H2, edges2 = np.histogramdd(good_grid, bins=(pdbins, redbins, x1bins,))
+	H2, edges2 = np.histogramdd(good_grid, bins=(pdbins, redbins, x1bins, abbins, cbins,))
 
 	eff_grid=np.divide(H2.astype(float), H1.astype(float))
 	#print eff_grid
