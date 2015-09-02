@@ -17,12 +17,12 @@ def Reg_Grid(uG, ebin, order):
 	#uG=np.load(str(uneGrid)+'.npy')
 	uG=np.nan_to_num(uG)
 	print 'Zoom Grid Shape: ', uG.shape
-	zoom_grid=ndimage.interpolation.zoom(uG, (float(max(uG.shape))/uG.shape[0], float(max(uG.shape))/uG.shape[1],float(max(uG.shape))/uG.shape[2],float(max(uG.shape))/uG.shape[3], float(max(uG.shape))/uG.shape[4]),order=order, mode='nearest')
-	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (float(max(uG.shape))/ebin[0].shape[0]),order=order, mode='nearest')
-	red_Zoom=ndimage.interpolation.zoom(ebin[1], (float(max(uG.shape))/ebin[1].shape[0]),order=order, mode='nearest')
-	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (float(max(uG.shape))/ebin[2].shape[0]),order=order, mode='nearest')
-	ab_Zoom=ndimage.interpolation.zoom(ebin[3], (float(max(uG.shape))/ebin[3].shape[0]), order=order, mode='nearest')
-	c_Zoom=ndimage.interpolation.zoom(ebin[4], (float(max(uG.shape))/ebin[4].shape[0]), order=order, mode='nearest')
+	zoom_grid=ndimage.interpolation.zoom(uG, (2,2,2,2,3),order=order, mode='nearest')
+	peak_Zoom=ndimage.interpolation.zoom(ebin[0], 2),order=order, mode='nearest')
+	red_Zoom=ndimage.interpolation.zoom(ebin[1], 2),order=order, mode='nearest')
+	x1_Zoom=ndimage.interpolation.zoom(ebin[2], 2),order=order, mode='nearest')
+	ab_Zoom=ndimage.interpolation.zoom(ebin[3], 2), order=order, mode='nearest')
+	c_Zoom=ndimage.interpolation.zoom(ebin[4], 3), order=order, mode='nearest')
 	
 	print zoom_grid.shape, peak_Zoom.shape, red_Zoom.shape, x1_Zoom.shape, ab_Zoom.shape, c_Zoom.shape
 	return zoom_grid, peak_Zoom, red_Zoom, x1_Zoom, ab_Zoom, c_Zoom
