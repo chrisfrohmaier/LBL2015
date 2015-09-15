@@ -1,43 +1,41 @@
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import psycopg2
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy import ndimage
+from scipy.special import erf
+
+def Mid_Bins(arr):
+	new_array=[]
+	for i in range(len(arr)-1):
+		new_array.append((arr[i]+arr[i+1])/2.0)
+
+	return new_array
 
 
-def Load_Grid(gridname, binname):
-	g=np.load(gridname)
-	ebin=np.load(binname)
-	return g, ebin
+
+def SkewG(x,g,a,mu,s):
+	efunc=erf((g*(x-mu))/(s*np.sqrt(2.)))
+	return (a/(s*np.sqrt(2.*np.pi)))*(np.exp((-(x-mu)**2.)/(2.*s**2.)))*(1.+efunc)
 
 
 
-def Reg_Grid(uG, ebin, order):
-	#uG=np.load(str(uneGrid)+'.npy')
-	uG=np.nan_to_num(uG)
-	print 'Zoom Grid Shape: ', uG.shape
-	zoom_grid=ndimage.interpolation.zoom(uG, (2,2,2,2,3),order=order, mode='nearest')
-	peak_Zoom=ndimage.interpolation.zoom(ebin[0], (2),order=order, mode='nearest')
-	red_Zoom=ndimage.interpolation.zoom(ebin[1], (2),order=order, mode='nearest')
-	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (2),order=order, mode='nearest')
-	ab_Zoom=ndimage.interpolation.zoom(ebin[3], (2), order=order, mode='nearest')
-	c_Zoom=ndimage.interpolation.zoom(ebin[4], (3), order=order, mode='nearest')
-	
-	print zoom_grid.shape, peak_Zoom.shape, red_Zoom.shape, x1_Zoom.shape, ab_Zoom.shape, c_Zoom.shape
-	return zoom_grid, peak_Zoom, red_Zoom, x1_Zoom, ab_Zoom, c_Zoom
 
+print 'Skewx', 'SkewFrac', 'Mean C', 'Count', 'Number Pass'
+def Update_DB_from_Color_Data(lowc, highc, mskewa):
+	#print lowc, highc
+	conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
+	cur = conn.cursor()
+	cur.execute("SELECT COUNT(*) from sn_mc where (color >%s and color <%s);",((float(lowc),float(highc),)))
+	count=cur.fetchone()[0]
+	x=np.mean((lowc,highc))
+	skewx=SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366)
+	print skewx, skewx/mskewa, x, count, int(count*skewx/mskewa)
+	setF=int(count)-int(count*skewx/mskewa)
+	cur.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
+	cur.commit()
+	print 'Done Colour :', x
 #m=query_db()
-#make_grid(m)
-eff_grid, ebin=Load_Grid('Supernova_Efficiency_Grid.npy', 'Bin_Edges.npy')
-print 'Grid Loaded'
-zoom_grid, peak_Zoom, red_Zoom, x1_Zoom, ab_Zoom, c_Zoom=Reg_Grid(eff_grid, ebin, 1)
-
-def Remap_Ranges(care, rang):
-	return (care-min(rang))*(len(rang))/((max(rang)-min(rang)))
-
-def eff(peakd, red, x1, ab, zoom_grid=zoom_grid, peak_Zoom=peak_Zoom, red_Zoom=red_Zoom, x1_Zoom=x1_Zoom, ab_Zoom=ab_Zoom):
-	c_collapse=zoom_grid[Remap_Ranges(peak, peak_Zoom),Remap_Ranges(red, red_Zoom),Remap_Ranges(x1, x1_Zoom),Remap_Ranges(ab, ab_Zoom)]
-	print 'Color Efficiency Array: ', c_collapse
-	print 'Average Efficiency: ', c_collapse.mean
-
+bins=np.linspace(-0.2,0.4,100)
+skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
+for i in range(len(bins)-1):
+	Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa))
