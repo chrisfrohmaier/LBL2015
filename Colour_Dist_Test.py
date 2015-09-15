@@ -32,7 +32,7 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa):
 	print skewx, skewx/mskewa, x, count, int(count*skewx/mskewa)
 	setF=int(count)-int(count*skewx/mskewa)
 	cur.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
-	cur.commit()
+	conn.commit()
 	print 'Done Colour :', x
 #m=query_db()
 bins=np.linspace(-0.2,0.4,100)
