@@ -3,6 +3,7 @@ import matplotlib
 import psycopg2
 import numpy as np
 from scipy.special import erf
+from mpi4py import MPI
 
 def Mid_Bins(arr):
 	new_array=[]
