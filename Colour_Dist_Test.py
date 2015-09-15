@@ -75,4 +75,4 @@ ndo = my_nmax - my_nmin
 #print 'Time', TI.time()*(my_rank+1*np.pi)
 for i in range( my_nmin, my_nmax):
 	print bins[i],bins[i+1]
-	#Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa))
+	Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa))
