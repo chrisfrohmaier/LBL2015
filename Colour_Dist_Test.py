@@ -43,7 +43,7 @@ N_MODELS_TOTAL = len(bins)-1
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
 found_array=np.ones(N_MODELS_TOTAL)
-time_init = TI.time()
+
 nproc = MPI.COMM_WORLD.Get_size()   	# number of processes
 my_rank = MPI.COMM_WORLD.Get_rank()   	# The number/rank of this process
 
