@@ -35,22 +35,8 @@ flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400'
 
 colour=m[:,0]
 #mag_bin=np.linspace(min(mag),max(mag),20)
-n_colour, bin_colour= np.histogram(colour, bins=100) #Binning ALL the data for a 'Total' array
-n_colour2, bin_colour2 = np.histogram(colour[m[:,1]==True], bins=bin_colour) #Binning the succesfully recovered data
-n_colour_eff=np.divide(n_colour2.astype(float), n_colour.astype(float)) #Successful divided by total gives efficiency in each bin
-tot_colour, totbm =np.histogram(colour, bins=bin_colour)
-tot_err=np.divide(1., np.sqrt(tot_colour))
-
-#plt.plot(Mid_Bins(colour_bin), n_colour_eff)
-plt.errorbar(Mid_Bins(bin_colour), n_colour_eff, yerr=tot_err, color=np.random.choice(flat_cols))
-#plt.xticks(np.arange(min(colour),max(colour)+0.01, 0.01))
-plt.yticks(np.arange(0, 0.51, 0.1))
-#for the minor ticks, use no labels; default NullFormatter
-plt.ylim(0,0.5)
-plt.xlim(min(colour),max(colour))
-plt.axhline(0.5, color='black', linestyle='dashed', linewidth=0.5)
-plt.title('colour fraction Recovery')
-plt.ylabel('Fraction Recovered')
+plt.hist(m[:,0], bins=100)
+plt.ylabel('Number')
 plt.xlabel('Colour')
 
 fig = matplotlib.pyplot.gcf()
