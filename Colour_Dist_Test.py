@@ -36,10 +36,21 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa):
 	conn.commit()
 	conn.close()
 	print 'Done Colour :', x
+
+def Fix_Broken_Bins(lowc, highc, mskewa):
+	conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
+	cur = conn.cursor()
+	print 'Fixing Colour: ', x
+	cur.execute("UPDATE sn_mc SET colour_pass = True WHERE (color >=%s and color <%s)",((float(lowc),float(highc),)) )
+	conn.commit()
+	print 'Fixed Colour: ', x
+	print 'Redoing Colour: ', x
+	Update_DB_from_Color_Data(lowc,highc, max(skewa))
+
 #m=query_db()
 bins=np.linspace(-0.2,0.4,100)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
-
+'''
 N_MODELS_TOTAL = len(bins)-1
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
@@ -75,4 +86,8 @@ ndo = my_nmax - my_nmin
 #print 'Time', TI.time()*(my_rank+1*np.pi)
 for i in range( my_nmin, my_nmax):
 	print bins[i],bins[i+1]
+	#Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa))
+'''
+Fix_Bins=[1,2,3,4,5,6,7,8,9,10]
+for i in Fix_Bins:
 	Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa))
