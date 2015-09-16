@@ -11,7 +11,7 @@ def Mid_Bins(arr):
 	return new_array
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
-cur.execute("SELECT peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found from sn_mc where ra<310;")
+cur.execute("SELECT peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found from sn_mc where colour_pass=True and ra<310;")
 print 'Database Query Complete'
 m=cur.fetchall()
 cur.close()
@@ -27,23 +27,16 @@ def Bin_Me(arr, final_bins):
 '''
                               Table "public.sn_mc"
 
-0 peak_date
-1 ra
-2 dec
-3 ab_magb
-4 redshift
-5 x1
-6 color
-7 int_dis
-8 found
+0 color
+1 found
+
 '''
 flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400','#c0392b','#7f8c8d']
 
-colour=m[:,6]
+colour=m[:,0]
 #mag_bin=np.linspace(min(mag),max(mag),20)
 n_colour, bin_colour= np.histogram(colour, bins=100) #Binning ALL the data for a 'Total' array
-n_colour2, bin_colour2 = np.histogram(colour[m[:,8]==True], bins=bin_colour) #Binning the succesfully recovered dat
-a
+n_colour2, bin_colour2 = np.histogram(colour[m[:,1]==True], bins=bin_colour) #Binning the succesfully recovered data
 n_colour_eff=np.divide(n_colour2.astype(float), n_colour.astype(float)) #Successful divided by total gives efficiency in each bin
 tot_colour, totbm =np.histogram(colour, bins=bin_colour)
 tot_err=np.divide(1., np.sqrt(tot_colour))
