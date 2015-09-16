@@ -44,8 +44,7 @@ colour=m[:,6]
 n_colour, bin_colour= np.histogram(colour, bins=100) #Binning ALL the data for a 'Total' array
 n_colour2, bin_colour2 = np.histogram(colour[m[:,8]==True], bins=bin_colour) #Binning the succesfully recovered dat
 a
-n_colour_eff=np.divide(n_colour2.astype(float), n_colour.astype(float)) #Successful divided by total gives efficien
-cy in each bin
+n_colour_eff=np.divide(n_colour2.astype(float), n_colour.astype(float)) #Successful divided by total gives efficiency in each bin
 tot_colour, totbm =np.histogram(colour, bins=bin_colour)
 tot_err=np.divide(1., np.sqrt(tot_colour))
 
