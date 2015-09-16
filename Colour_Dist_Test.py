@@ -40,12 +40,13 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa):
 def Fix_Broken_Bins(lowc, highc, mskewa):
 	conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 	cur = conn.cursor()
+	x=np.mean((lowc,highc))
 	print 'Fixing Colour: ', x
 	cur.execute("UPDATE sn_mc SET colour_pass = True WHERE (color >=%s and color <%s)",((float(lowc),float(highc),)) )
 	conn.commit()
 	print 'Fixed Colour: ', x
 	print 'Redoing Colour: ', x
-	Update_DB_from_Color_Data(lowc,highc, max(skewa))
+	Update_DB_from_Color_Data(lowc,highc, mskewa)
 	conn.close()
 
 #m=query_db()
