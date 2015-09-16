@@ -11,7 +11,7 @@ def Mid_Bins(arr):
 	return new_array
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
-cur.execute("SELECT peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found from sn_mc where colour_pass=True and ra<310;")
+cur.execute("SELECT color, found from sn_mc where colour_pass=True and ra<310;")
 print 'Database Query Complete'
 m=cur.fetchall()
 cur.close()
