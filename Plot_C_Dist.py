@@ -3,12 +3,18 @@ matplotlib.use('Agg')
 import psycopg2
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.special import erf
 def Mid_Bins(arr):
 	new_array=[]
 	for i in range(len(arr)-1):
 		new_array.append((arr[i]+arr[i+1])/2.0)
 
 	return new_array
+def SkewG(x,g,a,mu,s):
+	efunc=erf((g*(x-mu))/(s*np.sqrt(2.)))
+	return (a/(s*np.sqrt(2.*np.pi)))*(np.exp((-(x-mu)**2.)/(2.*s**2.)))*(1.+efunc)
+
+
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
 cur.execute("SELECT color, found from sn_mc where colour_pass=True and ra<310;")
@@ -35,7 +41,7 @@ flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400'
 
 colour=m[:,0]
 #mag_bin=np.linspace(min(mag),max(mag),20)
-plt.hist(m[:,0], bins=100, color=flat_cols[1], label='Simulated Sample Distribution')
+plt.hist(m[:,0], bins=100, color=flat_cols[1], label='Simulated Sample Distribution', normed=True)
 
 bins=np.linspace(-0.2,0.4,10000)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
