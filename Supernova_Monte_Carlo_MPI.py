@@ -285,24 +285,26 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	m=Get_Obs_Conditions(Ra, Dec, peak_date, cur=cur)
 
 	mabs= -19.05 - alpha*x_1 + beta*colour + int_dis #Setting the absolute Magnitude of the Supernova
-	if m.size==0:
-		return mabs, 9999.99, False, 9999.99
+	
 	#print 'MW Extinction E(B-V): ', m[:,7][0]
 	dust = sncosmo.CCM89Dust()
 	model=sncosmo.Model(source=source, effects=[dust], effect_names=['mw'], effect_frames=['obs']) 
-	model.set(z=redshift,t0=peak_date,x1=x_1, c=colour, mwebv=m[:,7][0]) #Setting redshift
+	model.set(z=redshift,t0=peak_date,x1=x_1, c=colour) #Setting redshift
 	
 	model.set_source_peakabsmag(mabs,'bessellb','ab', cosmo=FlatLambdaCDM(H0=70,Om0=0.3)) #Fixing my peak absolute magnitude
 	#model.set(x1=x_1, c=colour)
+	absmagb=model.source_peakabsmag('bessellb','ab', cosmo=FlatLambdaCDM(H0=70,Om0=0.3))
+	absmag_r=model.source_peakabsmag('ptf48r','ab', cosmo=FlatLambdaCDM(H0=70,Om0=0.3))
 
 	band=sncosmo.get_bandpass('ptf48r') #Retrieving the ptf48r bandpass 
-    
+	if m.size==0:
+		return mabs, absmag_r, False, 9999.99, False
+	model.set(mwebv=m[:,7][0])
 	
 	
 	maglc=model.bandmag('ptf48r','ab',m[:,0]) #Creating a magnitude array of the lightcurve  
 	fluxlc=model.bandflux('ptf48r',m[:,0]) #Creating a flux array of the lightcurve
-	absmagb=model.source_peakabsmag('bessellb','ab', cosmo=FlatLambdaCDM(H0=70,Om0=0.3))
-	absmag_r=model.source_peakabsmag('ptf48r','ab', cosmo=FlatLambdaCDM(H0=70,Om0=0.3))
+	
 	'''
 	m[:,2]	| ccdid
 	m[:,3]	| lmt_mg_new
@@ -326,7 +328,7 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	sn_par=np.array((time_array[mag_lc<20], mag_lc[mag_lc<20], flux_lc[mag_lc<20], ccd_lc[mag_lc<20], lmt_lc[mag_lc<20], see_rat[mag_lc<20], med_lc[mag_lc<20], pix_lc[mag_lc<20] )).T
 	if sn_par.size == 0:
 		#print '--------------------------------------SNPAR--------------------------------------'
-		return mabs, 9999.99, False, 9999.99, False
+		return mabs, absmag_r, False, 9999.99, False
 
 	'''snapr
 	snpar[:,0]	| time
@@ -342,8 +344,8 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 
 	return  mabs, absmag_r, sn_par, m[:,7][0], True #m[:,7][0] is color_excess
 
-def update_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv, cur2=cur2):
-	cur2.execute("INSERT INTO sn_mc (peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)",(float(peak_date), ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv))
+def update_sn_mc_table(peak_date, ra, dec, abmag_r, redshift, x1, color, int_dis, found, ebv, cur2=cur2):
+	cur2.execute("INSERT INTO sn_mc (peak_date, ra, dec, abmag_r, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)",(float(peak_date), ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv))
 	conn2.commit()
 
 
@@ -391,8 +393,8 @@ for i in range( my_nmin, my_nmax):
 	elif good==True:		
 		find_bool=Check_Detection(sn_par)
 		Pass=Pass_Selection(sn_par, find_bool[:,0], peak_date)
-	#print Ra, Dec, Pass
-	update_sn_mc_table(peak_date, Ra, Dec, absmagb, zedshift, xone, color, int_dis, Pass, ebv)
+	#print Ra, Dec, absmagb, absmag_r, Pass
+	update_sn_mc_table(peak_date, Ra, Dec, absmag_r, zedshift, xone, color, int_dis, Pass, ebv)
 
 #uncomment this at the end of your script
 cur.close()
