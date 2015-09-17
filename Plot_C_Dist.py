@@ -41,12 +41,12 @@ flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400'
 
 colour=m[:,0]
 #mag_bin=np.linspace(min(mag),max(mag),20)
-hist,bine=np.histogram(m[:,0], bins=np.linspace(-0.2,0.4,100))
+hist,bine=np.histogram(m[:,0], bins=100)
 print bine
 print hist
 #, color=flat_cols[1], label='Simulated Sample Distribution', normed=True
 hist=hist.astype(float)/max(hist).astype(float)
-plt.bar(Mid_Bins(bine), hist, align='center', color=flat_cols[1], label='Simulated Sample Distribution')
+plt.bar(Mid_Bins(bine), hist, align='center', color=flat_cols[1], label='Simulated Sample Distribution', width = (bins[1] - bins[0]))
 
 bins=np.linspace(-0.2,0.4,10000)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
