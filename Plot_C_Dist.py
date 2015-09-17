@@ -41,7 +41,7 @@ flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400'
 
 colour=m[:,0]
 #mag_bin=np.linspace(min(mag),max(mag),20)
-hist,bine=np.histogram(m[:,0], bins=100)
+hist,bine=np.histogram(m[:,0], bins=np.linspace(-0.2,0.4,100))
 center = (bine[:-1] + bine[1:]) / 2
 #, color=flat_cols[1], label='Simulated Sample Distribution', normed=True
 hist=hist/max(hist)
