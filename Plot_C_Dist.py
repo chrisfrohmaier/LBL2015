@@ -45,12 +45,12 @@ hist,bine=np.histogram(m[:,0], bins=np.linspace(-0.2,0.4,100))
 print bine
 print hist
 #, color=flat_cols[1], label='Simulated Sample Distribution', normed=True
-hist=hist/max(hist)
+hist=hist.astype(float)/max(hist).astype(float)
 plt.bar(Mid_Bins(bine), hist, align='center', color=flat_cols[1], label='Simulated Sample Distribution')
 
 bins=np.linspace(-0.2,0.4,10000)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
-#skewa=skewa/max(skewa)
+skewa=skewa/max(skewa)
 
 plt.plot(Mid_Bins(bins),skewa, label='Betoule Distribution', color=flat_cols[7])
 
