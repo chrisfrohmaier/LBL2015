@@ -326,7 +326,7 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	sn_par=np.array((time_array[mag_lc<20], mag_lc[mag_lc<20], flux_lc[mag_lc<20], ccd_lc[mag_lc<20], lmt_lc[mag_lc<20], see_rat[mag_lc<20], med_lc[mag_lc<20], pix_lc[mag_lc<20] )).T
 	if sn_par.size == 0:
 		#print '--------------------------------------SNPAR--------------------------------------'
-		return mabs, 9999.99, False, 9999.99
+		return mabs, 9999.99, False, 9999.99, False
 
 	'''snapr
 	snpar[:,0]	| time
@@ -340,7 +340,7 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	'''
 	#print sn_par
 
-	return  mabs, absmag_r, sn_par, m[:,7][0] #m[:,7][0] is color_excess
+	return  mabs, absmag_r, sn_par, m[:,7][0], True #m[:,7][0] is color_excess
 
 def update_sn_mc_table(peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv, cur2=cur2):
 	cur2.execute("INSERT INTO sn_mc (peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)",(float(peak_date), ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv))
@@ -384,11 +384,11 @@ ndo = my_nmax - my_nmin
 for i in range( my_nmin, my_nmax):
 	Ra, Dec, peak_date, xone, color, zedshift, int_dis=Random_sneParameters(2455256.5,2455500.5,107.,270.,-2.,75.)
 
-	absmagb, absmag_r, sn_par, ebv=Gen_SN(peak_date, Ra, Dec, zedshift, color,xone, int_dis, cur=cur)
+	absmagb, absmag_r, sn_par, ebv, good=Gen_SN(peak_date, Ra, Dec, zedshift, color,xone, int_dis, cur=cur)
 	#print sn_par
-	if absmag_r==9999.99:
+	if good==False:
 		Pass=False
-	elif absmag_r<9999.99:		
+	elif good==True:		
 		find_bool=Check_Detection(sn_par)
 		Pass=Pass_Selection(sn_par, find_bool[:,0], peak_date)
 	#print Ra, Dec, Pass
