@@ -46,7 +46,7 @@ print bine
 
 #, color=flat_cols[1], label='Simulated Sample Distribution', normed=True
 hist=hist/max(hist)
-plt.bar(Mid_Bins(center), hist, align='center', color=flat_cols[1], label='Simulated Sample Distribution')
+plt.bar(Mid_Bins(bine), hist, align='center', color=flat_cols[1], label='Simulated Sample Distribution')
 
 bins=np.linspace(-0.2,0.4,10000)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
