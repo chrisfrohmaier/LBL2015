@@ -43,7 +43,7 @@ colour=m[:,0]
 #mag_bin=np.linspace(min(mag),max(mag),20)
 hist,bine=np.histogram(m[:,0], bins=np.linspace(-0.2,0.4,100))
 print bine
-
+print hist
 #, color=flat_cols[1], label='Simulated Sample Distribution', normed=True
 hist=hist/max(hist)
 plt.bar(Mid_Bins(bine), hist, align='center', color=flat_cols[1], label='Simulated Sample Distribution')
@@ -57,7 +57,7 @@ plt.plot(Mid_Bins(bins),skewa, label='Betoule Distribution', color=flat_cols[7])
 
 plt.ylabel('Number')
 plt.xlabel('Colour')
-
+plt.legend()
 fig = matplotlib.pyplot.gcf()
 fig.set_size_inches(15,10)
 plt.savefig('Post_Bin_Colour_Dist.png', dpi=150, bbox_inches='tight')
