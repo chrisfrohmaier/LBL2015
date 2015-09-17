@@ -345,7 +345,7 @@ def Gen_SN(peak_date, Ra, Dec, redshift, colour,x_1, int_dis, cur=cur):
 	return  mabs, absmag_r, sn_par, m[:,7][0], True #m[:,7][0] is color_excess
 
 def update_sn_mc_table(peak_date, ra, dec, abmag_r, redshift, x1, color, int_dis, found, ebv, cur2=cur2):
-	cur2.execute("INSERT INTO sn_mc (peak_date, ra, dec, abmag_r, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)",(float(peak_date), ra, dec, ab_magb, redshift, x1, color, int_dis, found, ebv))
+	cur2.execute("INSERT INTO sn_mc (peak_date, ra, dec, abmag_r, redshift, x1, color, int_dis, found, ebv) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)",(float(peak_date), ra, dec, abmag_r, redshift, x1, color, int_dis, found, ebv))
 	conn2.commit()
 
 
