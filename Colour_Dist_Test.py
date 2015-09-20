@@ -22,11 +22,10 @@ def SkewG(x,g,a,mu,s):
 
 
 #print 'Skewx', 'SkewFrac', 'Mean C', 'Count', 'Number Pass'
-def Update_DB_from_Color_Data(lowc, highc, mskewa):
+def Update_DB_from_Color_Data(lowc, highc, mskewa, cur2):
 	#print lowc, highc
 	x=np.mean((lowc,highc))
-	conn2 = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
-	cur2 = conn2.cursor()
+	
 	cur2.execute("SELECT COUNT(*) from sn_mc where (color >%s and color <%s);",((float(lowc),float(highc),)))
 	print cur2.query
 	print 'Count Done for Colour: ', x
@@ -40,7 +39,7 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa):
 	cur2.execute("UPDATE sn_mc SET colour_pass = False FROM (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s) AS subquery where sn_mc.sn_id=subquery.sn_id;",((float(lowc),float(highc),int(setF),)) )
 
 	conn2.commit()
-	cur2.close()
+	
 	print 'Done Colour :', x
 
 def Fix_Broken_Bins(lowc, highc, mskewa):
@@ -95,7 +94,13 @@ ndo = my_nmax - my_nmin
 #print 'Time', TI.time()*(my_rank+1*np.pi)
 for i in range( my_nmin, my_nmax):
 	print bins[i],bins[i+1]
-	Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa))
+	conn2 = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
+	print 'Opened Connection'
+	cur2 = conn2.cursor()
+	Update_DB_from_Color_Data(bins[i],bins[i+1], max(skewa), cur2)
+	cur2.close()
+	conn2.close()
+	print 'Closed Connection'
 '''
 Fix_Bins=[1,2,3,4,5,6,7,8,9,10]
 for i in Fix_Bins:
