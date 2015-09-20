@@ -21,21 +21,24 @@ def SkewG(x,g,a,mu,s):
 
 
 
-print 'Skewx', 'SkewFrac', 'Mean C', 'Count', 'Number Pass'
+#print 'Skewx', 'SkewFrac', 'Mean C', 'Count', 'Number Pass'
 def Update_DB_from_Color_Data(lowc, highc, mskewa):
 	#print lowc, highc
+	x=np.mean((lowc,highc))
 	conn2 = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 	cur2 = conn2.cursor()
 	cur2.execute("SELECT COUNT(*) from sn_mc where (color >%s and color <%s);",((float(lowc),float(highc),)))
-	cur2.query
+	print cur2.query
+	print 'Count Done for Colour: ', x
 	count=cur2.fetchone()[0]
-	x=np.mean((lowc,highc))
+	
 	skewx=SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366)
 	print skewx, skewx/mskewa, x, count, int(count*skewx/mskewa)
 	setF=int(count)-int(count*skewx/mskewa)
+	print 'Updating Colur: ', x
 	cur2.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
 	conn2.commit()
-	conn2.close()
+	cur2.close()
 	print 'Done Colour :', x
 
 def Fix_Broken_Bins(lowc, highc, mskewa):
