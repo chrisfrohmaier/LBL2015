@@ -34,10 +34,10 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa):
 	
 	skewx=SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366)
 	print skewx, skewx/mskewa, x, count, int(count*skewx/mskewa)
-	setF=int(count)-int(count*skewx/mskewa)
+	setF=int(count*skewx/mskewa)
 	print 'Updating Colur: ', x
 	#cur2.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
-	cur2.execute("UPDATE sn_mc SET colour_pass = False FROM (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s) AS subquery where sn_mc.sn_id=subquery.sn_id;",((float(lowc),float(highc),int(setF),)) )
+	cur2.execute("UPDATE sn_mc SET colour_pass = True FROM (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s) AS subquery where sn_mc.sn_id=subquery.sn_id;",((float(lowc),float(highc),int(setF),)) )
 
 	conn2.commit()
 	cur2.close()
@@ -48,7 +48,7 @@ def Fix_Broken_Bins(lowc, highc, mskewa):
 	cur = conn.cursor()
 	x=np.mean((lowc,highc))
 	print 'Fixing Colour: ', x
-	cur.execute("UPDATE sn_mc SET colour_pass = True WHERE (color >=%s and color <%s)",((float(lowc),float(highc),)) )
+	cur.execute("UPDATE sn_mc SET colour_pass = False WHERE (color >=%s and color <%s)",((float(lowc),float(highc),)) )
 	cur.query
 	conn.commit()
 	print 'Fixed Colour: ', x
