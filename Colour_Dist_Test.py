@@ -54,7 +54,7 @@ def Fix_Broken_Bins(lowc, highc, mskewa):
 #m=query_db()
 bins=np.linspace(-0.2,0.4,100)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
-'''
+
 N_MODELS_TOTAL = len(bins)-1
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
@@ -95,3 +95,4 @@ for i in range( my_nmin, my_nmax):
 Fix_Bins=[1,2,3,4,5,6,7,8,9,10]
 for i in Fix_Bins:
 	Fix_Broken_Bins(bins[i],bins[i+1], max(skewa))
+'''
