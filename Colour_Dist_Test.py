@@ -36,7 +36,9 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa):
 	print skewx, skewx/mskewa, x, count, int(count*skewx/mskewa)
 	setF=int(count)-int(count*skewx/mskewa)
 	print 'Updating Colur: ', x
-	cur2.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
+	#cur2.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
+	cur2.execute("UPDATE sn_mc SET colour_pass = False FROM (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s) AS subquery where sn_mc.sn_id=subquery.sn_id;",((float(lowc),float(highc),int(setF),)) )
+
 	conn2.commit()
 	cur2.close()
 	print 'Done Colour :', x
@@ -55,7 +57,7 @@ def Fix_Broken_Bins(lowc, highc, mskewa):
 	conn.close()
 
 #m=query_db()
-bins=np.linspace(-0.2,0.4,10000)
+bins=np.linspace(-0.2,0.4,100)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
 
 N_MODELS_TOTAL = len(bins)-1
