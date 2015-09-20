@@ -96,7 +96,7 @@ for i in range( my_nmin, my_nmax):
 		hml_dat=astropy.table.Table(data=hml, names=('ptfname', 'time', 'magnitude', 'mag_err', 'flux', 'flux_err', 'zp_new', 'zp', 'ra', 'dec', 'zpsys', 'filter'), dtype=('str','float','float','float','float','float','float','float','float','float','str','str'))
 		print 'Doing:', hml[:,0][0]
 
-		cur.execute("SELECT redshift, obsdate, phase from specinfo where ptfname=%s;",(str(hml[:,0][0]),))
+		cur.execute("SELECT select redshift from ptftrans where ptfname =%s;",(str(hml[:,0][0]),))
 		zed=cur.fetchone()
 
 		if len(zed)==0:
@@ -105,7 +105,7 @@ for i in range( my_nmin, my_nmax):
 		#print zed[0]
 		
 		model.set(z=zed[0])
-		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},nwalkers=50, nburn=100, nsamples=2000)
+		res, fitted_model=sncosmo.mcmc_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},nwalkers=10, nburn=100, nsamples=1000)
 		#res, fitted_model=sncosmo.fit_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)}, verbose=True)
 		#res, fitted_model=sncosmo.nest_lc(hml_dat, model, ['t0','x0','x1','c'], bounds={'x1':(-3.5,3.5), 'c':(-0.35,0.45)},)
 		pdate=res.parameters[1]
@@ -127,7 +127,7 @@ for i in range( my_nmin, my_nmax):
 		print 'chi2', sncosmo.chisq(hml_dat, fitted_model)
 		print 'ndof', len(hml_dat)-4. #len(data)-len(vparam_names)
 		print 'red_chi2', sncosmo.chisq(hml_dat, fitted_model)/(len(hml_dat)-4.)
-		print 'absolute magnitue', fitted_model.source_peakabsmag('bessellb','ab')
+		print 'absolute magnitue', fitted_model.source_peakabsmag('ptf48r','ab',cosmo=FlatLambdaCDM(H0=70,Om0=0.3))
 		# print 'chi2', res.chisq
 		# print 'res.ndof', res.ndof
 		# print 'red_chisq', res.chisq/res.ndof
