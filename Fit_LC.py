@@ -96,7 +96,7 @@ for i in range( my_nmin, my_nmax):
 		hml_dat=astropy.table.Table(data=hml, names=('ptfname', 'time', 'magnitude', 'mag_err', 'flux', 'flux_err', 'zp_new', 'zp', 'ra', 'dec', 'zpsys', 'filter'), dtype=('str','float','float','float','float','float','float','float','float','float','str','str'))
 		print 'Doing:', hml[:,0][0]
 
-		cur.execute("SELECT select redshift from ptftrans where ptfname =%s;",(str(hml[:,0][0]),))
+		cur.execute("SELECT redshift from ptftrans where ptfname =%s;",(str(hml[:,0][0]),))
 		zed=cur.fetchone()
 
 		if len(zed)==0:
