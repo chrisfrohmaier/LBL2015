@@ -6,6 +6,7 @@ import sncosmo
 import matplotlib.pyplot as plt
 from mpi4py import MPI
 from triangle import corner
+from astropy.cosmology import FlatLambdaCDM
 
 flat_cols=['#1abc9c','#2ecc71','#3498db','#9b59b6','#34495e','#f39c12','#d35400','#c0392b','#7f8c8d']
 l=np.genfromtxt('PTFNAME_Coord_List_Ia.dat', usecols=(0,), delimiter=',', dtype=None)
