@@ -58,7 +58,7 @@ def Fix_Broken_Bins(lowc, highc, mskewa):
 #m=query_db()
 bins=np.linspace(-0.2,0.4,100)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
-'''
+
 N_MODELS_TOTAL = len(bins)-1
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
@@ -92,8 +92,9 @@ ndo = my_nmax - my_nmin
 #print 'My_Rank:', my_rank
 #print 'my_node:', my_node
 #print 'Time', TI.time()*(my_rank+1*np.pi)
-'''
+
 for i in range(len(bins)-1):
+	print 'Bin Number: ', i 
 	print bins[i],bins[i+1]
 	conn2 = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 	print 'Opened Connection'
