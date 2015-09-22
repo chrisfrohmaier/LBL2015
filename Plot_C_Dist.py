@@ -17,7 +17,7 @@ def SkewG(x,g,a,mu,s):
 
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
-cur.execute("SELECT color, found from colour_dis_sn_mc where colour_pass=True and ra<310;")
+cur.execute("SELECT color, found from colour_dis_sn_mc where ra<310;")
 print 'Database Query Complete'
 m=cur.fetchall()
 cur.close()
