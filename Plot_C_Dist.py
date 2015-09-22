@@ -17,7 +17,7 @@ def SkewG(x,g,a,mu,s):
 
 conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 cur = conn.cursor()
-cur.execute("SELECT color, found from sn_mc where colour_pass=True and ra<310;")
+cur.execute("SELECT color, found from colour_dis_sn_mc where colour_pass=True and ra<310;")
 print 'Database Query Complete'
 m=cur.fetchall()
 cur.close()
@@ -52,7 +52,7 @@ bins=np.linspace(-0.2,0.4,10000)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
 skewa=skewa/max(skewa)
 
-plt.plot(Mid_Bins(bins),skewa, label='Betoule Distribution', color=flat_cols[7])
+plt.plot(Mid_Bins(bins),skewa, label='Betoule Distribution', color=flat_cols[2])
 
 
 plt.ylabel('Number')
@@ -60,6 +60,6 @@ plt.xlabel('Colour')
 plt.legend()
 fig = matplotlib.pyplot.gcf()
 fig.set_size_inches(15,10)
-plt.savefig('Post_Bin_Colour_Dist.png', dpi=150, bbox_inches='tight')
+plt.savefig('Post_Bin_Colour_Dist_new_table.png', dpi=150, bbox_inches='tight')
 #plt.show()
 plt.close()
