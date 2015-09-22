@@ -26,7 +26,7 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa, cur2):
 	#print lowc, highc
 	x=np.mean((lowc,highc))
 	
-	cur2.execute("SELECT COUNT(*) from sn_mc where (color >%s and color <%s);",((float(lowc),float(highc),)))
+	cur2.execute("SELECT COUNT(*) from sn_mc where (color >=%s and color <%s);",((float(lowc),float(highc),)))
 	print cur2.query
 	print 'Count Done for Colour: ', x
 	count=cur2.fetchone()[0]
@@ -56,7 +56,7 @@ def Fix_Broken_Bins(lowc, highc, mskewa):
 	conn.close()
 
 #m=query_db()
-bins=np.linspace(-0.2,0.4,200)
+bins=np.linspace(-0.2,0.4,500)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
 
 N_MODELS_TOTAL = len(bins)-1
