@@ -16,7 +16,7 @@ def Mid_Bins(arr):
 def query_db():
 	conn = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 	cur = conn.cursor()
-	cur.execute("SELECT peak_date, ra, dec, ab_magb, redshift, x1, color, int_dis, found from sn_mc where ra<310;")
+	cur.execute("SELECT peak_date, ra, dec, abmag_r, redshift, x1, color, int_dis, found from colour_dis_sn_mc where ra<310;")
 	print 'Database Query Complete'
 	m=cur.fetchall()
 	cur.close()
@@ -37,7 +37,7 @@ def Bin_Me(arr, final_bins):
 0 peak_date 
 1 ra        
 2 dec       
-3 ab_magb   
+3 ab_magr   
 4 redshift  
 5 x1        
 6 color     
@@ -47,24 +47,24 @@ def Bin_Me(arr, final_bins):
 
 '''Lets make a multid grid for peakdate, redshift, x1'''
 def make_grid(m):
-	first_grid=[m[:,0],m[:,4],m[:,5], m[:,3], m[:,6]]
+	first_grid=[m[:,0],m[:,4],m[:,5], m[:,3]]
 
-	good_grid=[m[:,0][m[:,8]==True],m[:,4][m[:,8]==True],m[:,5][m[:,8]==True], m[:,3][m[:,8]==True], m[:,6][m[:,8]==True]]
+	good_grid=[m[:,0][m[:,8]==True],m[:,4][m[:,8]==True],m[:,5][m[:,8]==True], m[:,3][m[:,8]==True]]
 
-	pdbins=np.linspace(min(m[:,0]), max(m[:,0]), 250)
+	pdbins=np.linspace(min(m[:,0]), max(m[:,0]), 300)
 	redbins=np.linspace(min(m[:,4]), max(m[:,4]), 50)
 	x1bins=np.linspace(min(m[:,5]), max(m[:,5]), 50)
 	abbins=np.linspace(min(m[:,3]), max(m[:,3]), 50)
-	cbins=np.linspace(min(m[:,6]), max(m[:,6]), 10)
+	
 
-	H1,edges1 = np.histogramdd(first_grid, bins=(pdbins,redbins,x1bins,abbins,cbins,))
+	H1,edges1 = np.histogramdd(first_grid, bins=(pdbins,redbins,x1bins,abbins,))
 	#print edges1
-	H2, edges2 = np.histogramdd(good_grid, bins=(pdbins, redbins, x1bins, abbins, cbins,))
+	H2, edges2 = np.histogramdd(good_grid, bins=(pdbins, redbins, x1bins, abbins,))
 
 	eff_grid=np.divide(H2.astype(float), H1.astype(float))
 	#print eff_grid
-	np.save('Supernova_Efficiency_Grid', eff_grid)
-	np.save('Bin_Edges', edges2)
+	np.save('Supernova_Efficiency_Grid_with_C_dist', eff_grid)
+	np.save('Bin_Edges_with_C_dist', edges2)
 	print 'Bin Edges Saved'
 	print 'Eff Grid Saved'
 	
@@ -84,7 +84,7 @@ def Reg_Grid(uneGrid, ebin, order):
 	red_Zoom=ndimage.interpolation.zoom(ebin[1], (200),order=order, mode='nearest')
 	x1_Zoom=ndimage.interpolation.zoom(ebin[2], (200),order=order, mode='nearest')
 	ab_Zoom=ndimage.interpolation.zoom(ebin[3], (200), order=order, mode='nearest')
-	c_Zoom=ndimage.interpolation.zoom(ebin[4], (100), order=order, mode='nearest')
+	
 	
 	print zoom_grid.shape, peak_Zoom.shape, red_Zoom.shape, x1_Zoom.shape, ab_Zoom.shape, c_Zoom.shape
 	return zoom_grid, peak_Zoom, red_Zoom, x1_Zoom, ab_Zoom, c_Zoom
