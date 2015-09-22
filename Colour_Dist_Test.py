@@ -30,13 +30,13 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa, cur2):
 	print cur2.query
 	print 'Count Done for Colour: ', x
 	count=cur2.fetchone()[0]
-	
+	print 'Number in bin: ', count
 	skewx=SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366)
 	print skewx, skewx/mskewa, x, count, int(count*skewx/mskewa)
 	setF=int(count)-int(count*skewx/mskewa)
 	print 'Updating Colour: ', x
 	#cur2.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
-	cur2.execute("UPDATE sn_mc SET colour_pass = False FROM (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s) AS subquery where (color >=%s and color <%s) and sn_mc.sn_id=subquery.sn_id;",((float(lowc),float(highc),int(setF),float(lowc),float(highc),)) )
+	cur2.execute("INSERT INTO colour_dis_sn_mc (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
 	print cur2.query
 	conn2.commit()
 	
@@ -56,9 +56,9 @@ def Fix_Broken_Bins(lowc, highc, mskewa):
 	conn.close()
 
 #m=query_db()
-bins=np.linspace(-0.2,0.4,1000)
+bins=np.linspace(-0.2,0.4,100)
 skewa=[SkewG(x,1.8192627275,0.997793919871,-0.105487431764,0.117890808366) for x in Mid_Bins(bins)]
-
+'''
 N_MODELS_TOTAL = len(bins)-1
 ra_array=np.ones(N_MODELS_TOTAL)
 dec_array=np.ones(N_MODELS_TOTAL)
@@ -92,8 +92,8 @@ ndo = my_nmax - my_nmin
 #print 'My_Rank:', my_rank
 #print 'my_node:', my_node
 #print 'Time', TI.time()*(my_rank+1*np.pi)
-
-for i in range( my_nmin, my_nmax):
+'''
+for i in range(len(bins)-1):
 	print bins[i],bins[i+1]
 	conn2 = psycopg2.connect(host='srv01050.soton.ac.uk', user='frohmaier', password='rates', database='frohmaier')
 	print 'Opened Connection'
