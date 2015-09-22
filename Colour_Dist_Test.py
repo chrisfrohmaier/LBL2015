@@ -36,7 +36,7 @@ def Update_DB_from_Color_Data(lowc, highc, mskewa, cur2):
 	setF=int(count)-int(count*skewx/mskewa)
 	print 'Updating Colour: ', x
 	#cur2.execute("UPDATE sn_mc SET colour_pass = False WHERE sn_id IN (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
-	cur2.execute("INSERT INTO colour_dis_sn_mc (SELECT sn_id from sn_mc where (color >=%s and color <%s) limit %s);",((float(lowc),float(highc),int(setF),)) )
+	cur2.execute("INSERT INTO colour_dis_sn_mc SELECT * from sn_mc where (color >=%s and color <%s) limit %s;",((float(lowc),float(highc),int(setF),)) )
 	print cur2.query
 	conn2.commit()
 	
